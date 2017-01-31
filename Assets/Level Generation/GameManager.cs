@@ -10,10 +10,12 @@ public class GameManager : MonoBehaviour {
 	int levelNum; //Level number
 
 	public GameObject floor_Prefab;
+	public GameObject rooms_Parent;
 
 	//Corridors
 	public GameObject h_corridor_Prefab;
 	public GameObject v_corridor_Prefab;
+	public GameObject corridors_Parent;
 
 	//Walls
 	public GameObject h_wall_Prefab;
@@ -31,8 +33,23 @@ public class GameManager : MonoBehaviour {
 		List<Section> sections = b.getSections();
 		foreach (Section _s in sections) {
 			if (t.getNodes () [_s.nodeIndex].getChildren () == null) {
-				GameObject go = Instantiate (floor_Prefab, new Vector2 (_s.centerPos.x - 5, _s.centerPos.y - 5), Quaternion.identity) as GameObject;
-				go.transform.localScale = new Vector2 (_s.size.x*0.8f, _s.size.y*0.8f);
+				GameObject floorGO = Instantiate (floor_Prefab, new Vector2 (_s.centerPos.x - 5, _s.centerPos.y - 5), Quaternion.identity) as GameObject;
+				floorGO.transform.localScale = new Vector2 (_s.size.x * 0.8f, _s.size.y * 0.8f);
+			}
+		}
+
+		foreach (Section _s in sections) {
+			GameObject corridorGO;
+
+			//Vertical Corridor
+			if (_s.centerPos.x == sections [_s.parent].centerPos.x) {
+				corridorGO = Instantiate (v_corridor_Prefab, new Vector2 (_s.centerPos.x-5, (_s.centerPos.y + sections [_s.parent].centerPos.y) / 2f-5), Quaternion.identity) as GameObject;
+				corridorGO.transform.localScale = new Vector2 (0.1f, Mathf.Abs(_s.centerPos.y-sections [_s.parent].centerPos.y));
+			}
+			//Horizontal Corridor
+			else {
+				corridorGO = Instantiate (h_corridor_Prefab, new Vector2((_s.centerPos.x+sections[_s.parent].centerPos.x)/2f-5,_s.centerPos.y-5), Quaternion.identity) as GameObject;
+				corridorGO.transform.localScale = new Vector2 (Mathf.Abs(_s.centerPos.x-sections [_s.parent].centerPos.x), 0.1f);
 			}
 		}
 	}
