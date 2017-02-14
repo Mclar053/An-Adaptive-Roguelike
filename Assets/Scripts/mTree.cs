@@ -15,18 +15,10 @@ public class mTree{
 
 	//---------------CONSTRUCTORS
 	//Default constructor
-	public mTree(){
-		levelNum = 2;
-		nodes = new List<Node>();
-		nodes.Add(new Node(-1,1f));
-		createTree();
-	}
-
-	//Same as default constructor but tree size is different
-	public mTree(int _levelNum){
+	public mTree(int _levelNum=2){
 		levelNum = _levelNum;
 		nodes = new List<Node>();
-		nodes.Add(new Node(-1,1f));
+		nodes.Add(new Node());
 		createTree();
 	}
 
@@ -60,22 +52,59 @@ public class mTree{
 			//Gets the current node from node arraylist
 			Node currentNode = nodes[_nodeNum];
 
-			int maxNodes;
+			int maxNodes = Random.Range (1,3);
+			List<Vector2> directions;
+
+			for (int i = 0; i < maxNodes; i++) {
+				//Checking direction of node for each room
+				//0=up, 1=down, 2=left, 3=right
+				int randDirection = Random.Range (0,3);
+				Vector2 selectedDirection = new Vector2 ();
+
+				//Up
+				if (randDirection == 0) {
+					selectedDirection = new Vector2 (currentNode.getGridPosition().x,currentNode.getGridPosition().y+1);
+				}
+				//Down
+				else if (randDirection == 1) {
+					selectedDirection = new Vector2 (currentNode.getGridPosition().x,currentNode.getGridPosition().y-1);
+				}
+				//Left
+				else if (randDirection == 2) {
+					selectedDirection = new Vector2 (currentNode.getGridPosition().x-1,currentNode.getGridPosition().y);
+				}
+				//Right
+				else {
+					selectedDirection = new Vector2 (currentNode.getGridPosition().x+1,currentNode.getGridPosition().y);
+				}
+
+				if (checkNodeGridPosition (selectedDirection) == -1) {
+					directions.Add (selectedDirection);
+				}
+
+			}
 
 			//*_*_*_*_*_*_*_*
-			//EDITED: Sets the children array length to 2 as this creates binary trees
-			currentNode.setChildrenArray(3);
+			//EDITED: Sets the children array length to the number of rooms that can be generated
+			currentNode.setChildrenArray(directions.Count);
 			//*_*_*_*_*_*_*_*
 
+			//Stores all the child node numbers when they have been added to the nodes List
+			//This allows these rooms to be generated first and so that they are not overwritten later in the process
+			List<int> childNodeNumbers;
 
 			//For each child node
 			for(int i=0; i<currentNode.getChildren().Length; i++){
 				//Create a new node in the nodes arraylist
-				nodes.Add(new Node(_nodeNum,spacePart,horizontalPart));
+				nodes.Add(new Node(_nodeNum,directions[i].x,directions[i].y));
 				//Set the child node's index in the current node
 				currentNode.setChildNode(i,nodes.Count-1);
+				childNodeNumbers.Add (nodes.Count-1);
+			}
+
+			foreach(int _num in childNodeNumbers){
 				//Create child nodes for the newly create child node
-				createNodes(nodes.Count-1);
+				createNodes(_num);
 			}
 			//Save the current node in the arraylist
 			nodes.Insert(_nodeNum,currentNode);
@@ -155,7 +184,7 @@ public class mTree{
 		for(int i=0; i<nodes.Count; i++){
 			Node n = nodes[i];
 			int[] c = n.getChildren();
-			Debug.Log(i+"----"+n.getParent()+"----"+n.getRoomID()+"----"+n.getSpacePartition()+"----"+n.splitHorizontalDirection());
+			Debug.Log(i+"----"+n.getParent()+"----"+n.getRoomID());
 			if(c!=null){
 				foreach(int _c in c) Debug.Log(" " + _c);
 			}

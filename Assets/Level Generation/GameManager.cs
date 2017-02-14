@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
+		/*
 		//Create Corridors
 		foreach (Section _s in sections) {
 			GameObject corridorGO;
@@ -154,6 +155,7 @@ public class GameManager : MonoBehaviour {
 				corridorGO.transform.localScale = new Vector2 (Mathf.Abs(_s.centerPos.x-sections [_s.parent].centerPos.x), 0.05f);
 			}
 		}
+		*/
 	}
 
 

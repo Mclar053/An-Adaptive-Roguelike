@@ -13,16 +13,10 @@ public class Node{
 	//Default constructor
 	//Sets parent to arguement (-1 as default) and room id to random integer between 0 and 50
 	//Sets space partition to arguement (0.5f is not given)
-	public Node(int _parent=-1){
+	public Node(int _parent=-1, int _gridX=0, int _gridY=0, int _roomID=0){
 		parent = _parent;
-		roomID = Random.Range(0,50);
-	}
-
-	//Constructor that takes parent and room id arguements
-	//Sets parent and room id to arguements
-	public Node(int _parent, int _id){
-		parent = _parent;
-		roomID = _id;
+		roomID = _roomID;
+		position = new Vector2 (_gridX,_gridY);
 	}
 
 	//Copy constructor
