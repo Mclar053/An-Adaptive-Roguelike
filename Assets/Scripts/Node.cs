@@ -11,8 +11,6 @@ public class Node{
 	private Vector2 position;/*EDIT: Added grid position variable*/
 
 	//Default constructor
-	//Sets parent to arguement (-1 as default) and room id to random integer between 0 and 50
-	//Sets space partition to arguement (0.5f is not given)
 	public Node(int _parent=-1, int _gridX=0, int _gridY=0, int _roomID=0){
 		parent = _parent;
 		roomID = _roomID;
@@ -60,7 +58,7 @@ public class Node{
 
 	/*EDIT: Added grid position getter*/
 	public Vector2 getGridPosition(){
-		return new Vector2 (this.position);
+		return new Vector2 (this.position.x, this.position.y);
 	}
 
 	//Sets the room id

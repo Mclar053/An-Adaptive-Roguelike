@@ -53,7 +53,7 @@ public class mTree{
 			Node currentNode = nodes[_nodeNum];
 
 			int maxNodes = Random.Range (1,3);
-			List<Vector2> directions;
+			List<Vector2> directions = new List<Vector2>();
 
 			for (int i = 0; i < maxNodes; i++) {
 				//Checking direction of node for each room
@@ -91,12 +91,12 @@ public class mTree{
 
 			//Stores all the child node numbers when they have been added to the nodes List
 			//This allows these rooms to be generated first and so that they are not overwritten later in the process
-			List<int> childNodeNumbers;
+			List<int> childNodeNumbers = new List<int>();
 
 			//For each child node
 			for(int i=0; i<currentNode.getChildren().Length; i++){
 				//Create a new node in the nodes arraylist
-				nodes.Add(new Node(_nodeNum,directions[i].x,directions[i].y));
+				nodes.Add(new Node(_nodeNum,(int)directions[i].x,(int)directions[i].y));
 				//Set the child node's index in the current node
 				currentNode.setChildNode(i,nodes.Count-1);
 				childNodeNumbers.Add (nodes.Count-1);
