@@ -8,26 +8,21 @@ public class Node{
 	private int parent;
 	private int[] children = null;
 	private int roomID;
-	private float spacePartition;
-	private bool horizontalDirection;
+	private Vector2 position;/*EDIT: Added grid position variable*/
 
 	//Default constructor
 	//Sets parent to arguement (-1 as default) and room id to random integer between 0 and 50
 	//Sets space partition to arguement (0.5f is not given)
-	public Node(int _parent=-1, float _spacePartition=0.5f, bool _horizontal=false){
+	public Node(int _parent=-1){
 		parent = _parent;
 		roomID = Random.Range(0,50);
-		spacePartition = _spacePartition;
-		horizontalDirection = _horizontal;
 	}
 
 	//Constructor that takes parent and room id arguements
 	//Sets parent and room id to arguements
-	public Node(int _parent, int _id, float _spacePartition=0.5f, bool _horizontal=false){
+	public Node(int _parent, int _id){
 		parent = _parent;
 		roomID = _id;
-		spacePartition = _spacePartition;
-		horizontalDirection = _horizontal;
 	}
 
 	//Copy constructor
@@ -36,9 +31,11 @@ public class Node{
 		parent = _n.getParent();
 		setChildren(_n.getChildren());
 		roomID = _n.getRoomID();
-		spacePartition = _n.getSpacePartition();
-		horizontalDirection = _n.splitHorizontalDirection();
+		position = _n.getGridPosition (); /*EDIT: Grid position assignmentment in copy constuctor*/
 	}
+
+
+	/* SETTERS */
 
 	//parent setter
 	public void setParent(int _parent){
@@ -67,10 +64,17 @@ public class Node{
 		}
 	}
 
+	/*EDIT: Added grid position getter*/
+	public Vector2 getGridPosition(){
+		return new Vector2 (this.position);
+	}
+
 	//Sets the room id
 	public void setRoomID(int _id){
 		roomID = _id;
 	}
+
+	/* GETTERS */
 
 	//Gets parent of this
 	public int getParent(){
@@ -93,14 +97,8 @@ public class Node{
 	public int getRoomID(){
 		return roomID;
 	}
-
-	public float getSpacePartition(){
-		return spacePartition;
-	}
-
-	public bool splitHorizontalDirection(){
-		return horizontalDirection;
-	}
+		
+	/* OTHER */
 
 	//Removes a child node from a nodes childNodes int array
 	public void removeChildNode(int _pos){

@@ -50,7 +50,7 @@ public class mTree{
 	//Recursive to create nodes for tree
 	void createNodes(int _nodeNum){
 		//*_*_*_*_*_*_*_*
-		//EDITED: Checks if the current node creates a set of 2 child nodes
+		//EDITED: Checks if the current node creates a set of child nodes
 		//If the number produced between 0-1 is greater than a number based on the formula in ''num then it creates the child nodes
 		//*_*_*_*_*_*_*_*
 		float num = 1f-(1f+(levelNum/10f))/(currentLevel+0.01f);
@@ -60,22 +60,11 @@ public class mTree{
 			//Gets the current node from node arraylist
 			Node currentNode = nodes[_nodeNum];
 
+			int maxNodes;
+
 			//*_*_*_*_*_*_*_*
 			//EDITED: Sets the children array length to 2 as this creates binary trees
-			currentNode.setChildrenArray(2);
-			//*_*_*_*_*_*_*_*
-
-			//*_*_*_*_*_*_*_*
-			//ADDED: Random space partition % for the child node when it is generated and direction of partition
-			float spacePart = Random.Range(300,700)/1000f;
-			bool horizontalPart;
-
-			//Checks the direction the child nodes would split in
-			if (currentNode.splitHorizontalDirection()) {
-				horizontalPart = false;
-			} else {
-				horizontalPart = true;
-			}
+			currentNode.setChildrenArray(3);
 			//*_*_*_*_*_*_*_*
 
 
@@ -87,9 +76,6 @@ public class mTree{
 				currentNode.setChildNode(i,nodes.Count-1);
 				//Create child nodes for the newly create child node
 				createNodes(nodes.Count-1);
-
-				//ADDED: For the other child node, find remaining space partition %
-				spacePart = 1 - spacePart;
 			}
 			//Save the current node in the arraylist
 			nodes.Insert(_nodeNum,currentNode);
@@ -119,6 +105,20 @@ public class mTree{
 			}
 		}
 		return sum;
+	}
+
+	/*ADDED: Checks if the nodes grid position is within the current nodes system
+	Returns position is nodes array if found, returns -1 if not found*/
+	private int checkNodeGridPosition(Vector2 _pos){
+		for(int i=0; i<this.getSize(); i++){
+			//Checks if the position that has been passed into the function is equal to any of the nodes grid positions
+			if(nodes[i].getGridPosition().Equals(_pos)){
+				//If found return the index where found at
+				return i;
+			}
+		}
+		//If not found, return -1 to indicate that the position has not been found
+		return -1;
 	}
 
 	//---------------GETTERS
