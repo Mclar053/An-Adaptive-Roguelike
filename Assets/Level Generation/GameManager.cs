@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour {
 		}
 
 		t = new mTree(levelNum);
+		while (t.getEndRoomCount () < 4) {
+			t = new mTree (levelNum);
+		}
 		t.printNodes ();
 		List<Node> allNodes = t.getNodes ();
 

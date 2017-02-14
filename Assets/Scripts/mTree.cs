@@ -58,7 +58,7 @@ public class mTree{
 			for (int i = 0; i < maxNodes; i++) {
 				//Checking direction of node for each room
 				//0=up, 1=down, 2=left, 3=right
-				int randDirection = Random.Range (0,3);
+				int randDirection = Random.Range (0,4);
 				Vector2 selectedDirection = new Vector2 ();
 
 				//Up
@@ -112,6 +112,17 @@ public class mTree{
 		}
 		//Move out of a level in the tree
 		currentLevel--;
+	}
+
+	//Returns number of nodes that do not have any child nodes
+	public int getEndRoomCount(){
+		int endCount = 0;
+		foreach (Node _n in nodes) {
+			if (_n.getChildren() == null) {
+				endCount++;
+			}
+		}
+		return endCount;
 	}
 
 	//Returns position of found number in array. If not found, return -1
