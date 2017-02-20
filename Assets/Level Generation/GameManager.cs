@@ -69,36 +69,7 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 		}
-
-		/*
-		//b = new BoardCreator (t);
-		//List<Section> sections = b.getSections();
-
-		//Create Rooms
-		foreach (Section _s in sections) {
-			if (t.getNodes () [_s.nodeIndex].getChildren () == null) {
-				GameObject floorGO = Instantiate (floor_Prefab, new Vector2 (_s.centerPos.x - 5, _s.centerPos.y - 5), Quaternion.identity,rooms_Parent.transform) as GameObject;
-				floorGO.transform.localScale = new Vector2 (_s.size.x * 0.7f, _s.size.y * 0.7f);
-			}
-		}
-		*/
-		/*
-		//Create Corridors
-		foreach (Section _s in sections) {
-			GameObject corridorGO;
-
-			//Vertical Corridor
-			if (_s.centerPos.x == sections [_s.parent].centerPos.x) {
-				corridorGO = Instantiate (v_corridor_Prefab, new Vector3 (_s.centerPos.x-5, (_s.centerPos.y + sections [_s.parent].centerPos.y) / 2f-5,-1f), Quaternion.identity,corridors_Parent.transform) as GameObject;
-				corridorGO.transform.localScale = new Vector2 (0.05f, Mathf.Abs(_s.centerPos.y-sections [_s.parent].centerPos.y));
-			}
-			//Horizontal Corridor
-			else {
-				corridorGO = Instantiate (h_corridor_Prefab, new Vector3((_s.centerPos.x+sections[_s.parent].centerPos.x)/2f-5,_s.centerPos.y-5,-1f), Quaternion.identity,corridors_Parent.transform) as GameObject;
-				corridorGO.transform.localScale = new Vector2 (Mathf.Abs(_s.centerPos.x-sections [_s.parent].centerPos.x), 0.05f);
-			}
-		}
-		*/
+			
 	}
 
 
