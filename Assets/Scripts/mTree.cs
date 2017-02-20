@@ -54,6 +54,10 @@ public class mTree{
 
 			int maxNodes = Random.Range (1,3);
 			List<Vector2> directions = new List<Vector2>();
+			bool up = false;
+			bool down = false;
+			bool left = false;
+			bool right = false;
 
 			for (int i = 0; i < maxNodes; i++) {
 				//Checking direction of node for each room
@@ -62,23 +66,28 @@ public class mTree{
 				Vector2 selectedDirection = new Vector2 ();
 
 				//Up
-				if (randDirection == 0) {
+				if (randDirection == 0 && !up) {
 					selectedDirection = new Vector2 (currentNode.getGridPosition().x,currentNode.getGridPosition().y+1);
+					up = true;
 				}
 				//Down
-				else if (randDirection == 1) {
+				else if (randDirection == 1 && !down) {
 					selectedDirection = new Vector2 (currentNode.getGridPosition().x,currentNode.getGridPosition().y-1);
+					down = true;
 				}
 				//Left
-				else if (randDirection == 2) {
+				else if (randDirection == 2 && !left) {
 					selectedDirection = new Vector2 (currentNode.getGridPosition().x-1,currentNode.getGridPosition().y);
+					left = true;
 				}
 				//Right
-				else {
+				else if (randDirection == 3 && !right) {
 					selectedDirection = new Vector2 (currentNode.getGridPosition().x+1,currentNode.getGridPosition().y);
+					right = true;
 				}
 
 				if (checkNodeGridPosition (selectedDirection) == -1) {
+					Debug.Log ("Node Num: "+_nodeNum+" Selected Direction: "+selectedDirection.x+" "+selectedDirection.y+" Current Grid Pos: "+currentNode.getGridPosition().x+" "+currentNode.getGridPosition().y);
 					directions.Add (selectedDirection);
 				}
 
@@ -152,7 +161,7 @@ public class mTree{
 	private int checkNodeGridPosition(Vector2 _pos){
 		for(int i=0; i<this.getSize(); i++){
 			//Checks if the position that has been passed into the function is equal to any of the nodes grid positions
-			if(nodes[i].getGridPosition().Equals(_pos)){
+			if(this.nodes[i].getGridPosition().Equals(_pos)){
 				//If found return the index where found at
 				return i;
 			}
