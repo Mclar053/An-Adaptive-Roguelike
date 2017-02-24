@@ -18,7 +18,7 @@ public class normalTile : Tile{
 public class gapTile : Tile{
 
 	public gapTile(float x=0, float y=0): base(x,y){
-		go = Instantiate ();
+//		go = Instantiate ();
 	}
 
 	public virtual void interactWith(GameObj _other){

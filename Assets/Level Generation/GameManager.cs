@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
-	BoardCreator b; //Boardcreator object
+	//BoardCreator b; //Boardcreator object
 	mTree t; //Level Tree
 	int levelNum; //Level number
 
