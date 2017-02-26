@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour {
 //	public static GameManager instance = null;
 	public RoomManager roomScript;
 
-	private int level = 3;
+	private int level = 10;
 
 	// Use this for initialization
 	void Awake () {

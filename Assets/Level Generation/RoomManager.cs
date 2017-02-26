@@ -23,9 +23,9 @@ public class RoomManager : MonoBehaviour {
 
 	void createLevel(int _level){
 		levelTree = new mTree (_level);
-		while (levelTree.getEndRoomCount () < 4) {
-			levelTree = new mTree (_level);
-		}
+//		while (levelTree.getEndRoomCount () < 4) {
+//			levelTree = new mTree (_level);
+//		}
 		List<Node> levelNodes = levelTree.getNodes ();
 
 		roomHolder = new Transform[levelNodes.Count];
@@ -48,11 +48,11 @@ public class RoomManager : MonoBehaviour {
 						currentNode.getGridPosition().y-1 == levelNodes[_childIndex].getGridPosition().y){
 						doorDown = true;
 					}
-					else if(currentNode.getGridPosition().x+1 == levelNodes[_childIndex].getGridPosition().x &&
+					else if(currentNode.getGridPosition().x-1 == levelNodes[_childIndex].getGridPosition().x &&
 						currentNode.getGridPosition().y == levelNodes[_childIndex].getGridPosition().y){
 						doorLeft = true;
 					}
-					else if(currentNode.getGridPosition().x-1 == levelNodes[_childIndex].getGridPosition().x &&
+					else if(currentNode.getGridPosition().x+1 == levelNodes[_childIndex].getGridPosition().x &&
 						currentNode.getGridPosition().y == levelNodes[_childIndex].getGridPosition().y){
 						doorRight = true;
 					}
@@ -69,15 +69,17 @@ public class RoomManager : MonoBehaviour {
 					currentNode.getGridPosition().y-1 == levelNodes[currentNode.getParent()].getGridPosition().y){
 					doorDown = true;
 				}
-				else if(currentNode.getGridPosition().x+1 == levelNodes[currentNode.getParent()].getGridPosition().x &&
+				else if(currentNode.getGridPosition().x-1 == levelNodes[currentNode.getParent()].getGridPosition().x &&
 					currentNode.getGridPosition().y == levelNodes[currentNode.getParent()].getGridPosition().y){
 					doorLeft = true;
 				}
-				else if(currentNode.getGridPosition().x-1 == levelNodes[currentNode.getParent()].getGridPosition().x &&
+				else if(currentNode.getGridPosition().x+1 == levelNodes[currentNode.getParent()].getGridPosition().x &&
 					currentNode.getGridPosition().y == levelNodes[currentNode.getParent()].getGridPosition().y){
 					doorRight = true;
 				}
 			}
+
+			Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doorUp, doorDown, doorLeft, doorRight));
 			roomHolder[i] = new GameObject ("Room"+i).transform;
 			createRoom (i, doorUp, doorDown, doorLeft, doorRight);
 		}
@@ -98,16 +100,16 @@ public class RoomManager : MonoBehaviour {
 					toInstantiate = wallTile;
 				}
 				//Checks if the current position requires a door tile
-				else if (_doorUp && x == Mathf.Ceil (columns / 2) && y == -1) {
+				if (_doorUp && x == Mathf.Floor (columns / 2f) && y == rows) {
 					toInstantiate = doorTile;
 				}
-				else if (_doorDown && x == Mathf.Ceil (columns / 2) && y == rows) {
+				else if (_doorDown && x == Mathf.Floor (columns / 2f) && y == -1) {
 					toInstantiate = doorTile;
 				}
-				else if(_doorLeft && y == Mathf.Ceil (rows / 2) && x == -1) {
+				else if(_doorLeft && y == Mathf.Floor (rows / 2f) && x == -1) {
 					toInstantiate = doorTile;
 				}
-				else if(_doorRight && y == Mathf.Ceil (rows / 2) && x == columns) {
+				else if(_doorRight && y == Mathf.Floor (rows / 2f) && x == columns) {
 					toInstantiate = doorTile;
 				}
 
