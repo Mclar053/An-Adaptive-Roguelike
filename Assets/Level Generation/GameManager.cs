@@ -3,19 +3,19 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-//	public static GameManager instance = null;
+	public static GameManager instance = null;
 	public RoomManager roomScript;
 
 	private int level = 3;
 
 	// Use this for initialization
 	void Awake () {
-//		if (instance == null) {
-//			instance = this;
-//		} else if(instance != this){
-//			Destroy (gameObject);
-//		}
-//		DontDestroyOnLoad (gameObject);
+		if (instance == null) {
+			instance = this;
+		} else if(instance != this){
+			Destroy (gameObject);
+		}
+		DontDestroyOnLoad (gameObject);
 
 		roomScript = GetComponent<RoomManager> ();
 		InitGame ();

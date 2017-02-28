@@ -8,7 +8,10 @@ public class RoomManager : MonoBehaviour {
 	public int columns = 13;
 	public int rows = 7;
 
-	public GameObject doorTile;
+	public GameObject doorLeftTile;
+	public GameObject doorRightTile;
+	public GameObject doorTopTile;
+	public GameObject doorBottomTile;
 	public GameObject floorTile;
 	public GameObject wallTile;
 	public GameObject gapTile;
@@ -17,15 +20,15 @@ public class RoomManager : MonoBehaviour {
 	private mTree levelTree;
 
 	//List of room objects
-	private List<Room> rooms = new List<Room>(); //Holds each room for each index
+	//private List<Room> rooms = new List<Room>(); //Holds each room for each index
 	private Transform[] roomHolder;
 	public int currentRoom; //Current room selected
 
 	void createLevel(int _level){
 		levelTree = new mTree (_level);
-//		while (levelTree.getEndRoomCount () < 4) {
-//			levelTree = new mTree (_level);
-//		}
+		while (levelTree.getEndRoomCount () < 4) {
+			levelTree = new mTree (_level);
+		}
 		List<Node> levelNodes = levelTree.getNodes ();
 
 		roomHolder = new Transform[levelNodes.Count];
@@ -82,6 +85,9 @@ public class RoomManager : MonoBehaviour {
 			Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doorUp, doorDown, doorLeft, doorRight));
 			roomHolder[i] = new GameObject ("Room"+i).transform;
 			createRoom (i, doorUp, doorDown, doorLeft, doorRight);
+
+			if(i!=0)
+				roomHolder [i].gameObject.SetActive (false);
 		}
 	}
 
@@ -101,16 +107,16 @@ public class RoomManager : MonoBehaviour {
 				}
 				//Checks if the current position requires a door tile
 				if (_doorUp && x == Mathf.Floor (columns / 2f) && y == rows) {
-					toInstantiate = doorTile;
+					toInstantiate = doorTopTile;
 				}
 				else if (_doorDown && x == Mathf.Floor (columns / 2f) && y == -1) {
-					toInstantiate = doorTile;
+					toInstantiate = doorBottomTile;
 				}
 				else if(_doorLeft && y == Mathf.Floor (rows / 2f) && x == -1) {
-					toInstantiate = doorTile;
+					toInstantiate = doorLeftTile;
 				}
 				else if(_doorRight && y == Mathf.Floor (rows / 2f) && x == columns) {
-					toInstantiate = doorTile;
+					toInstantiate = doorRightTile;
 				}
 
 				//Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
@@ -120,6 +126,13 @@ public class RoomManager : MonoBehaviour {
 				instance.transform.SetParent (roomHolder[_room]);
 			}
 		}
+	}
+
+	//Changes the current room the player is in
+	public void changeRoom(int _roomNumber){
+		roomHolder [currentRoom].gameObject.SetActive (false);
+		currentRoom = _roomNumber;
+		roomHolder [currentRoom].gameObject.SetActive (true);
 	}
 
 //	void roomSetup(){
