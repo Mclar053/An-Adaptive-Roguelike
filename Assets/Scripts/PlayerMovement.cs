@@ -21,4 +21,25 @@ public class PlayerMovement : MonoBehaviour {
 		//The movementvector does not exceed 1 meaning that diagonals are just as fast as moving horizontally or vertically
 		GetComponent<Rigidbody2D>().AddForce (Vector3.ClampMagnitude(movementVector,1) * playerSpeed);
 	}
+
+	void OnTriggerEnter2D(Collider2D other){
+		Vector2 currentGridPos = GameManager.instance.roomScript.currentGridPosition;
+		Debug.Log ("Entered!");
+		if(other.tag == "DoorLeft"){
+			transform.position = new Vector2 (12,3);
+			GameManager.instance.roomScript.changeRoom (currentGridPos.x - 1, currentGridPos.y);
+		}
+		if(other.tag == "DoorRight"){
+			transform.position = new Vector2 (0,3);
+			GameManager.instance.roomScript.changeRoom (currentGridPos.x + 1, currentGridPos.y);
+		}
+		if(other.tag == "DoorTop"){
+			transform.position = new Vector2 (6,0);
+			GameManager.instance.roomScript.changeRoom (currentGridPos.x, currentGridPos.y + 1);
+		}
+		if(other.tag == "DoorBottom"){
+			transform.position = new Vector2 (6,6);
+			GameManager.instance.roomScript.changeRoom (currentGridPos.x, currentGridPos.y - 1);
+		}
+	}
 }

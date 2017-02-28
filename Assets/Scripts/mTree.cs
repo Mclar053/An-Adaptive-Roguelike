@@ -197,6 +197,17 @@ public class mTree{
 		return nodes.Count;
 	}
 
+	//Returns the index in the tree of a node with the coordinates input
+	//Returns -1 if no node with input coordinates is found
+	public int getNodePosFromGridCoords(float _x, float _y){
+		for(int i=0; i<nodes.Count; i++){
+			if(nodes[i].getGridPosition().x == _x && nodes[i].getGridPosition().y == _y){
+				return i;
+			}
+		}
+		return -1;
+	}
+
 
 	//PRINT ALL NODES
 	public void printNodes(){
