@@ -5,12 +5,12 @@ using System.Collections;
 
 [RequireComponent (typeof (Rigidbody2D))]
 
-public class PlayerMovement : MonoBehaviour {
-
-
-	public float playerSpeed = 4f;
+public class PlayerMovement : movingObject {
 
 	void Start () {
+		currentHitpoints = 20;
+		speed = 20;
+		hitDelay = 0.5f;
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 	}
 
@@ -19,12 +19,11 @@ public class PlayerMovement : MonoBehaviour {
 		Vector2 movementVector = new Vector2(Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw("Vertical"));
 		//Adds a force to the player for the direction they are going
 		//The movementvector does not exceed 1 meaning that diagonals are just as fast as moving horizontally or vertically
-		GetComponent<Rigidbody2D>().AddForce (Vector3.ClampMagnitude(movementVector,1) * playerSpeed);
+		GetComponent<Rigidbody2D>().AddForce (Vector3.ClampMagnitude(movementVector,1) * speed);
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
 		Vector2 currentGridPos = GameManager.instance.roomScript.currentGridPosition;
-		Debug.Log ("Entered!");
 		if(other.tag == "DoorLeft"){
 			transform.position = new Vector2 (12,3);
 			GameManager.instance.roomScript.changeRoom (currentGridPos.x - 1, currentGridPos.y);

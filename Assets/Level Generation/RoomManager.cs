@@ -120,6 +120,10 @@ public class RoomManager : MonoBehaviour {
 					toInstantiate = doorRightTile;
 				}
 
+				if(x > 3 && x < 10 && y > 3 && y < 6){
+					toInstantiate = gapTile;
+				}
+
 				//Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
 				GameObject instance = Instantiate (toInstantiate, new Vector3 (x, y, 0f), Quaternion.identity) as GameObject;
 
