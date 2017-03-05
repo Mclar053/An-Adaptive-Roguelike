@@ -10,7 +10,7 @@ public class PlayerMovement : movingObject {
 	void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		currentHitpoints = 20;
-		speed = 20;
+		speed = 10;
 		hitDelay = 0.5f;
 		dmg = 3;
 		fireDelay = 0.5f;
@@ -30,18 +30,34 @@ public class PlayerMovement : movingObject {
 
 	void Update(){
 		if(fire()){
+			bool makeBullet = false;
+			Vector2 movementVector = new Vector2(Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw("Vertical"));
+			Vector2 clampedVector = Vector2.ClampMagnitude(movementVector,0.4f);
+			Vector2 directionVector = new Vector2 ();
+
 			if(Input.GetKey(KeyCode.DownArrow)){
-				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, 0, -1);
+				directionVector = new Vector2 (0, -1) + clampedVector;
+				makeBullet = true;
 			}
 			else if(Input.GetKey(KeyCode.UpArrow)){
-				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, 0, 1);
+				directionVector = new Vector2 (0, 1) + clampedVector;
+				makeBullet = true;
 			}
 			else if(Input.GetKey(KeyCode.LeftArrow)){
-				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, -1, 0);
+				directionVector = new Vector2 (-1, 0) + clampedVector;
+				makeBullet = true;
 			}
 			else if(Input.GetKey(KeyCode.RightArrow)){
-				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, 1, 0);
+				directionVector = new Vector2 (1, 0) + clampedVector;
+				makeBullet = true;
+
 			}
+
+			if (makeBullet) {
+				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, directionVector);
+				lastFired = Time.time;
+			}
+
 		}
 	}
 

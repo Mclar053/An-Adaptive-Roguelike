@@ -4,7 +4,7 @@ using System.Collections;
 public abstract class movingObject : MonoBehaviour {
 	
 	public float speed, maxHitpoints, currentHitpoints, hitDelay, dmg, fireDelay, shotSpeed, range;
-	protected float lastHit, lastFired;
+	public float lastHit, lastFired;
 	
 	virtual protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
@@ -46,7 +46,6 @@ public abstract class movingObject : MonoBehaviour {
 
 	public bool fire(){
 		if (Time.time > lastFired + fireDelay) {
-			lastFired = Time.time;
 			return true;
 		}
 		return false;

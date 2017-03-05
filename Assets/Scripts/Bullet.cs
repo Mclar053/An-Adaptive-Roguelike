@@ -37,8 +37,8 @@ public class Bullet : movingObject {
 		}
 	}
 
-	public void changeDirection(float _x, float _y){
-		direction = new Vector2 (_x,_y);
+	public void changeDirection(Vector2 _dir){
+		direction = _dir;
 	}
 
 	void checkDead(){

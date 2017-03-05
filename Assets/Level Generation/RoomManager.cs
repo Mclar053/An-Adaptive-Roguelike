@@ -144,9 +144,9 @@ public class RoomManager : MonoBehaviour {
 	}
 
 	//Creates a bullet in the room
-	public void createBullet(Vector2 _pos, float _dirX, float _dirY){
+	public void createBullet(Vector2 _pos, Vector2 _dir){
 		GameObject instance = Instantiate (bullet, _pos, Quaternion.identity) as GameObject;
-		instance.gameObject.GetComponent<Bullet> ().changeDirection (_dirX, _dirY);
+		instance.gameObject.GetComponent<Bullet> ().changeDirection (_dir);
 		instance.transform.SetParent (roomHolder [currentRoom]);
 	}
 
