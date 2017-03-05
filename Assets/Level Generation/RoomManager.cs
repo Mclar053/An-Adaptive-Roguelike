@@ -15,6 +15,8 @@ public class RoomManager : MonoBehaviour {
 	public GameObject floorTile;
 	public GameObject wallTile;
 	public GameObject gapTile;
+	public GameObject enemy;
+	public GameObject bullet;
 
 	//Current Level
 	private mTree levelTree;
@@ -86,6 +88,7 @@ public class RoomManager : MonoBehaviour {
 			Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doorUp, doorDown, doorLeft, doorRight));
 			roomHolder[i] = new GameObject ("Room"+i).transform;
 			createRoom (i, doorUp, doorDown, doorLeft, doorRight);
+			addEnemies (i);
 
 			if(i!=0)
 				roomHolder [i].gameObject.SetActive (false);
@@ -131,6 +134,20 @@ public class RoomManager : MonoBehaviour {
 				instance.transform.SetParent (roomHolder[_room]);
 			}
 		}
+	}
+
+	void addEnemies(int _room){
+		for(int i=0; i<3; i++){
+			GameObject instance = Instantiate (enemy, new Vector3 (Random.Range (0, columns), Random.Range (0, rows), 0f), Quaternion.identity) as GameObject;
+			instance.transform.SetParent (roomHolder [_room]);
+		}
+	}
+
+	//Creates a bullet in the room
+	public void createBullet(Vector2 _pos, float _dirX, float _dirY){
+		GameObject instance = Instantiate (bullet, _pos, Quaternion.identity) as GameObject;
+		instance.gameObject.GetComponent<Bullet> ().changeDirection (_dirX, _dirY);
+		instance.transform.SetParent (roomHolder [currentRoom]);
 	}
 
 	//Changes the current room the player is in

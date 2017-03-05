@@ -8,10 +8,16 @@ using System.Collections;
 public class PlayerMovement : movingObject {
 
 	void Start () {
+		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		currentHitpoints = 20;
 		speed = 20;
 		hitDelay = 0.5f;
-		GetComponent<Rigidbody2D> ().freezeRotation = true;
+		dmg = 3;
+		fireDelay = 0.5f;
+		shotSpeed = 6f;
+		lastHit = 0f;
+		lastFired = 0f;
+		range = 1f;
 	}
 
 	void FixedUpdate () {
@@ -20,6 +26,23 @@ public class PlayerMovement : movingObject {
 		//Adds a force to the player for the direction they are going
 		//The movementvector does not exceed 1 meaning that diagonals are just as fast as moving horizontally or vertically
 		GetComponent<Rigidbody2D>().AddForce (Vector3.ClampMagnitude(movementVector,1) * speed);
+	}
+
+	void Update(){
+		if(fire()){
+			if(Input.GetKey(KeyCode.DownArrow)){
+				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, 0, -1);
+			}
+			else if(Input.GetKey(KeyCode.UpArrow)){
+				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, 0, 1);
+			}
+			else if(Input.GetKey(KeyCode.LeftArrow)){
+				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, -1, 0);
+			}
+			else if(Input.GetKey(KeyCode.RightArrow)){
+				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, 1, 0);
+			}
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other){

@@ -3,7 +3,8 @@ using System.Collections;
 
 public abstract class movingObject : MonoBehaviour {
 	
-	public float speed, maxHitpoints, currentHitpoints, lastHit, hitDelay;
+	public float speed, maxHitpoints, currentHitpoints, hitDelay, dmg, fireDelay, shotSpeed, range;
+	protected float lastHit, lastFired;
 	
 	virtual protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
@@ -25,7 +26,7 @@ public abstract class movingObject : MonoBehaviour {
 
 	}
 
-	public void damage(int _dmg){
+	public void damage(float _dmg){
 		if (Time.time > lastHit + hitDelay) {
 			currentHitpoints -= _dmg;
 			lastHit = Time.time;
@@ -41,5 +42,13 @@ public abstract class movingObject : MonoBehaviour {
 
 	public float getLastHit(){
 		return lastHit;
+	}
+
+	public bool fire(){
+		if (Time.time > lastFired + fireDelay) {
+			lastFired = Time.time;
+			return true;
+		}
+		return false;
 	}
 }

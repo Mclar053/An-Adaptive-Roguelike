@@ -7,6 +7,8 @@ public class Enemy : movingObject {
 	void Start () {
 		speed = 10;
 		currentHitpoints = 5;
+		dmg = 2;
+		fireDelay = 20;
 	}
 	
 	// Update is called once per frame
@@ -21,8 +23,8 @@ public class Enemy : movingObject {
 
 	void OnCollisionStay2D(Collision2D other){
 		if(other.gameObject.tag == "Player"){
-			other.gameObject.GetComponent<PlayerMovement> ().damage(2);
-			if(other.gameObject.GetComponent<PlayerMovement>().checkDead()){
+			other.gameObject.GetComponent<movingObject> ().damage(2);
+			if(other.gameObject.GetComponent<movingObject>().checkDead()){
 				Debug.Log ("DEAD!");
 			}
 		}
