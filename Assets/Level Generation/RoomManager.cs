@@ -16,7 +16,7 @@ public class RoomManager : MonoBehaviour {
 	public GameObject wallTile;
 	public GameObject gapTile;
 	public GameObject[] enemy;
-	public GameObject bullet;
+	public GameObject[] bullet;
 
 	//Current Level
 	private mTree levelTree;
@@ -138,14 +138,15 @@ public class RoomManager : MonoBehaviour {
 
 	void addEnemies(int _room){
 		for(int i=0; i<3; i++){
-			GameObject instance = Instantiate (enemy[Random.Range(0,3)], new Vector3 (Random.Range (0, columns), Random.Range (0, rows), 0f), Quaternion.identity) as GameObject;
+			GameObject instance = Instantiate (enemy[Random.Range(0,4)], new Vector3 (Random.Range (0, columns), Random.Range (0, rows), 0f), Quaternion.identity) as GameObject;
 			instance.transform.SetParent (roomHolder [_room]);
 		}
 	}
 
 	//Creates a bullet in the room
-	public void createBullet(Vector2 _pos, Vector2 _dir){
-		GameObject instance = Instantiate (bullet, _pos, Quaternion.identity) as GameObject;
+	public void createBullet(int _bulletType, Vector2 _pos, Vector2 _dir, float _speed, float _dmg, float _range){
+		GameObject instance = Instantiate (bullet[_bulletType], _pos, Quaternion.identity) as GameObject;
+		instance.gameObject.GetComponent<Bullet> ().setBulletStats(_speed,_dmg,_range);
 		instance.gameObject.GetComponent<Bullet> ().changeDirection (_dir);
 		instance.transform.SetParent (roomHolder [currentRoom]);
 	}

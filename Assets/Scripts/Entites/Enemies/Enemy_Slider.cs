@@ -3,32 +3,31 @@ using System.Collections;
 
 public class Enemy_Slider : Enemy {
 
-	private float lastHitBlock = 0;
 	public Vector2 direction;
 
 	// Use this for initialization
-	void Start () {
+	override protected void Start () {
 		speed = 20;
-		currentHitpoints = 5;
+		currentHitpoints = 20;
 		dmg = 2;
 		fireDelay = 20;
 		direction = new Vector2 (0,-1);
 	}
 
-	void FixedUpdate () {
+	override protected void FixedUpdate () {
 		//Adds a force to the player for the direction they are going
 		//The movementvector does not exceed 1 meaning that diagonals are just as fast as moving horizontally or vertically
 		GetComponent<Rigidbody2D>().AddForce (Vector3.ClampMagnitude(direction,1) * speed);
 	}
 
-	void OnCollisionStay2D(Collision2D other){
+	override protected void OnCollisionStay2D(Collision2D other){
 		if(other.gameObject.tag == "Player"){
 			other.gameObject.GetComponent<movingObject> ().damage(dmg);
 			if(other.gameObject.GetComponent<movingObject>().checkDead()){
 				Debug.Log ("DEAD!");
 			}
 		}
-		if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Gap" || other.gameObject.tag == "Enemy") {
+		if (other.gameObject.tag == "Player" || other.gameObject.tag == "Wall" || other.gameObject.tag == "Gap" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "DoorLeft" || other.gameObject.tag == "DoorRight" || other.gameObject.tag == "DoorTop" || other.gameObject.tag == "DoorBottom") {
 			changeDirection ();
 		}
 	}

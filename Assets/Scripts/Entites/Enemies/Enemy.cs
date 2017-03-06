@@ -4,7 +4,7 @@ using System.Collections;
 public class Enemy : movingObject {
 
 	// Use this for initialization
-	void Start () {
+	override protected void Start () {
 		speed = 10;
 		currentHitpoints = 5;
 		dmg = 2;
@@ -12,7 +12,7 @@ public class Enemy : movingObject {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
+	override protected void FixedUpdate () {
 		Transform target = GameObject.FindGameObjectWithTag ("Player").transform;
 		//Gets the movement vector for the player
 		Vector2 movementVector = new Vector2(target.position.x - GetComponent<Rigidbody2D>().transform.position.x, target.position.y - GetComponent<Rigidbody2D>().transform.position.y);
@@ -20,8 +20,25 @@ public class Enemy : movingObject {
 		//The movementvector does not exceed 1 meaning that diagonals are just as fast as moving horizontally or vertically
 		GetComponent<Rigidbody2D>().AddForce (Vector3.ClampMagnitude(movementVector,1) * speed);
 	}
+		
+	override protected void OnTriggerStay2D(Collider2D other){
+		damagePlayerTrigger (other);
+	}
 
-	void OnCollisionStay2D(Collision2D other){
+	override protected void OnCollisionStay2D(Collision2D other){
+		damagePlayerCollision (other);
+	}
+
+	protected void damagePlayerTrigger(Collider2D other){
+		if(other.gameObject.tag == "Player"){
+			other.gameObject.GetComponent<movingObject> ().damage(dmg);
+			if(other.gameObject.GetComponent<movingObject>().checkDead()){
+				Debug.Log ("DEAD!");
+			}
+		}
+	}
+
+	protected void damagePlayerCollision(Collision2D other){
 		if(other.gameObject.tag == "Player"){
 			other.gameObject.GetComponent<movingObject> ().damage(dmg);
 			if(other.gameObject.GetComponent<movingObject>().checkDead()){

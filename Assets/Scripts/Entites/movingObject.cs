@@ -15,14 +15,14 @@ public abstract class movingObject : MonoBehaviour {
 	}
 
 	virtual protected void OnTriggerEnter2D(Collider2D other){
+
+	}
+
+	virtual protected void OnTriggerStay2D(Collider2D other){
 		
 	}
 
 	virtual protected void OnCollisionStay2D(Collision2D other){
-
-	}
-
-	virtual protected void OnCollisionEnter2D(Collision2D other){
 
 	}
 
@@ -33,7 +33,7 @@ public abstract class movingObject : MonoBehaviour {
 		}
 	}
 
-	public bool checkDead(){
+	virtual public bool checkDead(){
 		if (currentHitpoints <= 0) {
 			return true;
 		}

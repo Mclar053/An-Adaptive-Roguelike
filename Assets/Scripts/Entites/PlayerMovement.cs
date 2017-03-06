@@ -7,7 +7,7 @@ using System.Collections;
 
 public class PlayerMovement : movingObject {
 
-	void Start () {
+	override protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		currentHitpoints = 20;
 		speed = 10;
@@ -20,7 +20,7 @@ public class PlayerMovement : movingObject {
 		range = 1f;
 	}
 
-	void FixedUpdate () {
+	override protected void FixedUpdate () {
 		//Gets the movement vector for the player
 		Vector2 movementVector = new Vector2(Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw("Vertical"));
 		//Adds a force to the player for the direction they are going
@@ -55,14 +55,14 @@ public class PlayerMovement : movingObject {
 			}
 
 			if (makeBullet) {
-				GameManager.instance.roomScript.createBullet (GetComponent<Rigidbody2D> ().position, directionVector);
+				GameManager.instance.roomScript.createBullet (0, GetComponent<Rigidbody2D> ().position, directionVector, shotSpeed, dmg, range);
 				lastFired = Time.time;
 			}
 
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D other){
+	override protected void OnTriggerEnter2D(Collider2D other){
 		Vector2 currentGridPos = GameManager.instance.roomScript.currentGridPosition;
 		if(other.tag == "DoorLeft"){
 			transform.position = new Vector2 (12,3);
