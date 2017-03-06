@@ -29,6 +29,8 @@ public class PlayerMovement : movingObject {
 	}
 
 	void Update(){
+
+		//Manages if the player can firing and checks what direction they are firing in
 		if(fire()){
 			bool makeBullet = false;
 			Vector2 movementVector = new Vector2(Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -50,7 +52,6 @@ public class PlayerMovement : movingObject {
 			else if(Input.GetKey(KeyCode.RightArrow)){
 				directionVector = new Vector2 (1, 0) + clampedVector;
 				makeBullet = true;
-
 			}
 
 			if (makeBullet) {

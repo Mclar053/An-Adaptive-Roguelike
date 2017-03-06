@@ -23,7 +23,7 @@ public class Enemy : movingObject {
 
 	void OnCollisionStay2D(Collision2D other){
 		if(other.gameObject.tag == "Player"){
-			other.gameObject.GetComponent<movingObject> ().damage(2);
+			other.gameObject.GetComponent<movingObject> ().damage(dmg);
 			if(other.gameObject.GetComponent<movingObject>().checkDead()){
 				Debug.Log ("DEAD!");
 			}

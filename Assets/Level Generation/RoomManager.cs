@@ -15,7 +15,7 @@ public class RoomManager : MonoBehaviour {
 	public GameObject floorTile;
 	public GameObject wallTile;
 	public GameObject gapTile;
-	public GameObject enemy;
+	public GameObject[] enemy;
 	public GameObject bullet;
 
 	//Current Level
@@ -123,7 +123,7 @@ public class RoomManager : MonoBehaviour {
 					toInstantiate = doorRightTile;
 				}
 
-				if(x > 3 && x < 10 && y > 3 && y < 6){
+				if(x > 1 && x < columns-1 && y > 1 && y < rows-1 && Random.Range(0,100) > 70){
 					toInstantiate = gapTile;
 				}
 
@@ -138,7 +138,7 @@ public class RoomManager : MonoBehaviour {
 
 	void addEnemies(int _room){
 		for(int i=0; i<3; i++){
-			GameObject instance = Instantiate (enemy, new Vector3 (Random.Range (0, columns), Random.Range (0, rows), 0f), Quaternion.identity) as GameObject;
+			GameObject instance = Instantiate (enemy[Random.Range(0,3)], new Vector3 (Random.Range (0, columns), Random.Range (0, rows), 0f), Quaternion.identity) as GameObject;
 			instance.transform.SetParent (roomHolder [_room]);
 		}
 	}
@@ -164,6 +164,21 @@ public class RoomManager : MonoBehaviour {
 
 		//Sets the current room to be activate in the hierarchy
 		roomHolder [currentRoom].gameObject.SetActive (true);
+	}
+
+	public void checkRoomComplete(){
+		if(GameObject.FindGameObjectsWithTag("Enemy").Length == 0){
+			openDoor (GameObject.FindGameObjectWithTag ("DoorBottom"));
+			openDoor (GameObject.FindGameObjectWithTag ("DoorLeft"));
+			openDoor (GameObject.FindGameObjectWithTag ("DoorRight"));
+			openDoor (GameObject.FindGameObjectWithTag ("DoorTop"));
+		}
+	}
+
+	void openDoor(GameObject _door){
+		if(_door != null){
+			_door.GetComponent<Collider2D> ().isTrigger = true;
+		}
 	}
 
 	public void SetupLevel(int _level){
