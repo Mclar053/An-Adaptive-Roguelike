@@ -3,8 +3,9 @@ using System.Collections;
 
 public class Enemy_Ghost : Enemy {
 
-	protected override void Start (){
-		speed = 10;
+	override protected void Start (){
+		GetComponent<Rigidbody2D> ().freezeRotation = true;
+		speed = 7;
 		currentHitpoints = 10;
 		dmg = 2;
 	}

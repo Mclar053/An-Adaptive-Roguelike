@@ -9,8 +9,9 @@ public class PlayerMovement : movingObject {
 
 	override protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
-		currentHitpoints = 20;
-		speed = 10;
+		maxHitpoints = 20;
+		currentHitpoints = maxHitpoints;
+		speed = 14;
 		hitDelay = 0.5f;
 		dmg = 3;
 		fireDelay = 0.5f;

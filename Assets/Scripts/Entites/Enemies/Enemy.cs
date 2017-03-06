@@ -5,7 +5,8 @@ public class Enemy : movingObject {
 
 	// Use this for initialization
 	override protected void Start () {
-		speed = 10;
+		GetComponent<Rigidbody2D> ().freezeRotation = true;
+		speed = 12;
 		currentHitpoints = 5;
 		dmg = 2;
 		fireDelay = 20;

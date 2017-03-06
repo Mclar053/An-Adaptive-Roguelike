@@ -2,12 +2,13 @@
 using System.Collections;
 
 public class Enemy_Slider : Enemy {
-
+	
 	public Vector2 direction;
 
 	// Use this for initialization
 	override protected void Start () {
-		speed = 20;
+		GetComponent<Rigidbody2D> ().freezeRotation = true;
+		speed = 22;
 		currentHitpoints = 20;
 		dmg = 2;
 		fireDelay = 20;

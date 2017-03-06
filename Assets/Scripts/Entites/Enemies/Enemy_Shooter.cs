@@ -6,13 +6,14 @@ public class Enemy_Shooter : Enemy {
 
 
 	protected override void Start (){
+		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		speed = 10;
 		currentHitpoints = 10;
 		dmg = 2;
 		fireDelay = 4;
 		shotSpeed = 7;
 		range = 2;
-		lastFired = 0;
+		lastFired = Time.time + 3f;
 	}
 	
 	// Update is called once per frame
