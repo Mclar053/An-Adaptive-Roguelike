@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
 	public RoomManager roomScript;
 	public LoadXmlData roomData;
 	private GUIStyle guiStyle = new GUIStyle();
+	public int numberOfRooms = 18;
 
 	private int level = 3;
 

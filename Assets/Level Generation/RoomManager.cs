@@ -80,11 +80,11 @@ public class RoomManager : MonoBehaviour {
 
 			Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doors[0],doors[1],doors[2],doors[3]));
 			roomHolder[i] = new GameObject ("Room"+i).transform;
-			createRoom (i, doors, GameManager.instance.roomData.getRoom(currentNode.getRoomID()));
-			if(i!=0) addEnemies (i); //First room is safe
-
-			if(i!=0)
+			createRoom (i, doors, GameManager.instance.roomData.getRoomLayout(currentNode.getRoomID()));
+			if (i != 0) {
+				addEnemies (i, GameManager.instance.roomData.getRoomEntities (currentNode.getRoomID ())); //First room is safe
 				roomHolder [i].gameObject.SetActive (false);
+			}
 		}
 	}
 
@@ -145,9 +145,10 @@ public class RoomManager : MonoBehaviour {
 		}
 	}
 
-	void addEnemies(int _room){
-		for(int i=0; i<3; i++){
-			GameObject instance = Instantiate (enemy[Random.Range(0,4)], new Vector3 (Random.Range (1, columns-2), Random.Range (1, rows-2), 0f), Quaternion.identity) as GameObject;
+	void addEnemies(int _room, int[,] _entities){
+		for(int i=0; i<_entities.GetLength(0); i++){
+			Debug.Log (System.String.Format("{0}, {1}, {2}, {3}",i,_entities[i,0],_entities[i,1],_entities[i,2]));
+			GameObject instance = Instantiate (enemy[_entities[i,0]], new Vector3 (_entities[i,1],_entities[i,2], 0f), Quaternion.identity) as GameObject;
 			instance.transform.SetParent (roomHolder [_room]);
 		}
 	}

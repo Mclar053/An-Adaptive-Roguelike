@@ -105,7 +105,7 @@ public class mTree{
 			//For each child node
 			for(int i=0; i<currentNode.getChildren().Length; i++){
 				//Create a new node in the nodes arraylist
-				nodes.Add(new Node(_nodeNum,(int)directions[i].x,(int)directions[i].y, Random.Range(0,19)));
+				nodes.Add(new Node(_nodeNum,(int)directions[i].x,(int)directions[i].y, Random.Range(0,GameManager.instance.numberOfRooms)));
 				//Set the child node's index in the current node
 				currentNode.setChildNode(i,nodes.Count-1);
 				childNodeNumbers.Add (nodes.Count-1);
