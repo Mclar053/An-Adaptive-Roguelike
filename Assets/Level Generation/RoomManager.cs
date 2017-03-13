@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
+using System.Xml;
 
 public class RoomManager : MonoBehaviour {
 
-	public int columns = 13;
-	public int rows = 7;
+	public int columns = 15;
+	public int rows = 9;
 
 	public GameObject doorLeftTile;
 	public GameObject doorRightTile;
@@ -23,11 +24,13 @@ public class RoomManager : MonoBehaviour {
 
 	//List of room objects
 	//private List<Room> rooms = new List<Room>(); //Holds each room for each index
-	private Transform[] roomHolder;
+	private Transform[] roomHolder = new Transform[0];
 	public int currentRoom = 0; //Current room selected
 	public Vector2 currentGridPosition = new Vector2(0,0);
 
 	void createLevel(int _level){
+		destroyLevel ();
+
 		levelTree = new mTree (_level);
 		while (levelTree.getEndRoomCount () < 4) {
 			levelTree = new mTree (_level);
@@ -38,93 +41,99 @@ public class RoomManager : MonoBehaviour {
 
 		for (int i = 0; i < levelNodes.Count; i++) {
 			Node currentNode = levelNodes[i];
-			bool doorUp = false;
-			bool doorDown = false;
-			bool doorLeft = false;
-			bool doorRight = false;
+			//Check position of doors for room
+			bool[] doors = new bool[4] {false,false,false,false}; //[0] Up [1] Down [2] Left [3] Right
 
 			//Check for child node doors
 			if(currentNode.getChildren() != null){
 				foreach(int _childIndex in currentNode.getChildren()){
-					if(currentNode.getGridPosition().x == levelNodes[_childIndex].getGridPosition().x &&
-						currentNode.getGridPosition().y+1 == levelNodes[_childIndex].getGridPosition().y){
-						doorUp = true;
+					if(checkDoor(0, 1, currentNode, levelNodes[_childIndex])){
+						doors[0] = true;
 					}
-					else if(currentNode.getGridPosition().x == levelNodes[_childIndex].getGridPosition().x &&
-						currentNode.getGridPosition().y-1 == levelNodes[_childIndex].getGridPosition().y){
-						doorDown = true;
+					else if(checkDoor(0, -1, currentNode, levelNodes[_childIndex])){
+						doors[1] = true;
 					}
-					else if(currentNode.getGridPosition().x-1 == levelNodes[_childIndex].getGridPosition().x &&
-						currentNode.getGridPosition().y == levelNodes[_childIndex].getGridPosition().y){
-						doorLeft = true;
+					else if(checkDoor(-1, 0, currentNode, levelNodes[_childIndex])){
+						doors[2] = true;
 					}
-					else if(currentNode.getGridPosition().x+1 == levelNodes[_childIndex].getGridPosition().x &&
-						currentNode.getGridPosition().y == levelNodes[_childIndex].getGridPosition().y){
-						doorRight = true;
+					else if(checkDoor(1, 0, currentNode, levelNodes[_childIndex])){
+						doors[3] = true;
 					}
 				}
 			}
 
 			//Check for parent node door
 			if(currentNode.getParent() != -1){
-				if(currentNode.getGridPosition().x == levelNodes[currentNode.getParent()].getGridPosition().x &&
-					currentNode.getGridPosition().y+1 == levelNodes[currentNode.getParent()].getGridPosition().y){
-					doorUp = true;
+				if(checkDoor(0, 1, currentNode, levelNodes[currentNode.getParent()])){
+					doors[0] = true;
 				}
-				else if(currentNode.getGridPosition().x == levelNodes[currentNode.getParent()].getGridPosition().x &&
-					currentNode.getGridPosition().y-1 == levelNodes[currentNode.getParent()].getGridPosition().y){
-					doorDown = true;
+				else if(checkDoor(0, -1, currentNode, levelNodes[currentNode.getParent()])){
+					doors[1] = true;
 				}
-				else if(currentNode.getGridPosition().x-1 == levelNodes[currentNode.getParent()].getGridPosition().x &&
-					currentNode.getGridPosition().y == levelNodes[currentNode.getParent()].getGridPosition().y){
-					doorLeft = true;
+				else if(checkDoor(-1, 0, currentNode, levelNodes[currentNode.getParent()])){
+					doors[2] = true;
 				}
-				else if(currentNode.getGridPosition().x+1 == levelNodes[currentNode.getParent()].getGridPosition().x &&
-					currentNode.getGridPosition().y == levelNodes[currentNode.getParent()].getGridPosition().y){
-					doorRight = true;
+				else if(checkDoor(1, 0, currentNode, levelNodes[currentNode.getParent()])){
+					doors[3] = true;
 				}
 			}
 
-			Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doorUp, doorDown, doorLeft, doorRight));
+			Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doors[0],doors[1],doors[2],doors[3]));
 			roomHolder[i] = new GameObject ("Room"+i).transform;
-			createRoom (i, doorUp, doorDown, doorLeft, doorRight);
-			addEnemies (i);
+			createRoom (i, doors, GameManager.instance.roomData.getRoom(currentNode.getRoomID()));
+			if(i!=0) addEnemies (i); //First room is safe
 
 			if(i!=0)
 				roomHolder [i].gameObject.SetActive (false);
 		}
 	}
 
-	void createRoom(int _room, bool _doorUp, bool _doorDown, bool _doorLeft, bool _doorRight){
-		//Loop along x axis, starting from -1 (to fill corner) with floor or outerwall edge tiles.
-		for(int x = -1; x < columns + 1; x++)
-		{
-			//Loop along y axis, starting from -1 to place floor or outerwall tiles.
-			for(int y = -1; y < rows + 1; y++)
-			{
-				//Choose a random tile from our array of floor tile prefabs and prepare to instantiate it.
-				GameObject toInstantiate = floorTile;
+	void destroyLevel(){
+		foreach(Transform _t in roomHolder){
+			Destroy (_t.gameObject);
+		}
+	}
 
-				//Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
-				if (x == -1 || x == columns || y == -1 || y == rows) {
+	private bool checkDoor(int _xMod, int _yMod, Node _currentNode, Node _otherNode){
+		if(_currentNode.getGridPosition().x + _xMod == _otherNode.getGridPosition().x &&
+			_currentNode.getGridPosition().y + _yMod == _otherNode.getGridPosition().y){
+			return true;
+		}
+		return false;
+	}
+
+	void createRoom(int _room, bool[] _doors, int[,] levelLayout){
+		//Loop along x axis, starting from -1 (to fill corner) with floor or outerwall edge tiles.
+		for(int x = 0; x < columns; x++){
+			//Loop along y axis, starting from -1 to place floor or outerwall tiles.
+			for(int y = 0; y < rows; y++){
+				//Choose a random tile from our array of floor tile prefabs and prepare to instantiate it.
+				GameObject toInstantiate;
+
+				switch (levelLayout [x, y]) {
+				case 1:
+					toInstantiate = gapTile;
+					break;
+				case 2: case 3:
 					toInstantiate = wallTile;
+					break;
+				default:
+					toInstantiate = floorTile;
+					break;
 				}
+					
 				//Checks if the current position requires a door tile
-				if (_doorUp && x == Mathf.Floor (columns / 2f) && y == rows) {
+				if (_doors[0] && x == Mathf.Floor (columns / 2f) && y == rows-1) {
 					toInstantiate = doorTopTile;
 				}
-				else if (_doorDown && x == Mathf.Floor (columns / 2f) && y == -1) {
+				else if (_doors[1] && x == Mathf.Floor (columns / 2f) && y == 0) {
 					toInstantiate = doorBottomTile;
 				}
-				else if(_doorLeft && y == Mathf.Floor (rows / 2f) && x == -1) {
+				else if(_doors[2] && y == Mathf.Floor (rows / 2f) && x == 0) {
 					toInstantiate = doorLeftTile;
 				}
-				else if(_doorRight && y == Mathf.Floor (rows / 2f) && x == columns) {
+				else if(_doors[3] && y == Mathf.Floor (rows / 2f) && x == columns-1) {
 					toInstantiate = doorRightTile;
-				}
-
-				if(x > 1 && x < columns-1 && y > 1 && y < rows-1 && Random.Range(0,100) > 70){
-					toInstantiate = gapTile;
 				}
 
 				//Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
@@ -138,7 +147,7 @@ public class RoomManager : MonoBehaviour {
 
 	void addEnemies(int _room){
 		for(int i=0; i<3; i++){
-			GameObject instance = Instantiate (enemy[Random.Range(0,4)], new Vector3 (Random.Range (0, columns), Random.Range (0, rows), 0f), Quaternion.identity) as GameObject;
+			GameObject instance = Instantiate (enemy[Random.Range(0,4)], new Vector3 (Random.Range (1, columns-2), Random.Range (1, rows-2), 0f), Quaternion.identity) as GameObject;
 			instance.transform.SetParent (roomHolder [_room]);
 		}
 	}

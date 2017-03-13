@@ -5,6 +5,8 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
 	public RoomManager roomScript;
+	public LoadXmlData roomData;
+	private GUIStyle guiStyle = new GUIStyle();
 
 	private int level = 3;
 
@@ -18,7 +20,11 @@ public class GameManager : MonoBehaviour {
 		DontDestroyOnLoad (gameObject);
 
 		roomScript = GetComponent<RoomManager> ();
+		roomData = GetComponent<LoadXmlData> ();
+		roomData.loadRooms ();
 		InitGame ();
+		guiStyle.fontSize = 20;
+		guiStyle.normal.textColor = Color.white;
 	}
 
 	void InitGame(){
@@ -28,14 +34,17 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		roomScript.checkRoomComplete ();
+		if (Input.GetKeyDown (KeyCode.R)) {
+			roomScript.SetupLevel (level);
+		}
 	}
 
 	void OnGUI(){
-		GUI.Label (new Rect(10,0,100,25), "Health: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().currentHitpoints+"/"+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().maxHitpoints);
-		GUI.Label (new Rect(10,25,100,25), "Speed: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().speed);
-		GUI.Label (new Rect(10,50,100,25), "Range: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().range);
-		GUI.Label (new Rect(10,75,100,25), "Fire Rate: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().fireDelay);
-		GUI.Label (new Rect(10,100,100,25), "Shot Speed: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().shotSpeed);
-		GUI.Label (new Rect(10,125,100,25), "Damage: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().dmg);
+		GUI.Label (new Rect(10,0,100,25), "Health: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().currentHitpoints+"/"+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().maxHitpoints,guiStyle);
+		GUI.Label (new Rect(10,25,100,25), "Speed: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().speed,guiStyle);
+		GUI.Label (new Rect(10,50,100,25), "Range: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().range,guiStyle);
+		GUI.Label (new Rect(10,75,100,25), "Fire Rate: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().fireDelay,guiStyle);
+		GUI.Label (new Rect(10,100,100,25), "Shot Speed: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().shotSpeed,guiStyle);
+		GUI.Label (new Rect(10,125,100,25), "Damage: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().dmg,guiStyle);
 	}
 }

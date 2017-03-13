@@ -66,19 +66,19 @@ public class PlayerMovement : movingObject {
 	override protected void OnTriggerEnter2D(Collider2D other){
 		Vector2 currentGridPos = GameManager.instance.roomScript.currentGridPosition;
 		if(other.tag == "DoorLeft"){
-			transform.position = new Vector2 (12,3);
+			transform.position = new Vector2 (13,4);
 			GameManager.instance.roomScript.changeRoom (currentGridPos.x - 1, currentGridPos.y);
 		}
 		if(other.tag == "DoorRight"){
-			transform.position = new Vector2 (0,3);
+			transform.position = new Vector2 (1,4);
 			GameManager.instance.roomScript.changeRoom (currentGridPos.x + 1, currentGridPos.y);
 		}
 		if(other.tag == "DoorTop"){
-			transform.position = new Vector2 (6,0);
+			transform.position = new Vector2 (7,1);
 			GameManager.instance.roomScript.changeRoom (currentGridPos.x, currentGridPos.y + 1);
 		}
 		if(other.tag == "DoorBottom"){
-			transform.position = new Vector2 (6,6);
+			transform.position = new Vector2 (7,7);
 			GameManager.instance.roomScript.changeRoom (currentGridPos.x, currentGridPos.y - 1);
 		}
 	}
