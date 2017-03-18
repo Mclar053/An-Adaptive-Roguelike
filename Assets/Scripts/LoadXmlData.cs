@@ -9,6 +9,8 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 	public TextAsset GameAsset;
 
 	List<Room> rooms = new List<Room>();
+	List<Room> bossRooms = new List<Room>();
+	List<Room> specialRooms = new List<Room>();
 
 	public void loadRooms(){
 		XmlDocument xmlDoc = new XmlDocument(); // xmlDoc is the new xml document.

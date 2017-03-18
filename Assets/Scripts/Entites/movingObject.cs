@@ -26,6 +26,17 @@ public abstract class movingObject : MonoBehaviour {
 
 	}
 
+	protected void setStats(float _speed,float _maxHitpoints,float _hitDelay,float _dmg,float _fireDelay,float _shotSpeed,float _range){
+		speed = _speed;
+		maxHitpoints = _maxHitpoints;
+		currentHitpoints = maxHitpoints;
+		hitDelay = _hitDelay;
+		dmg = _dmg;
+		fireDelay = _fireDelay;
+		shotSpeed = _shotSpeed;
+		range = _range;
+	}
+
 	public void damage(float _dmg){
 		if (Time.time > lastHit + hitDelay) {
 			currentHitpoints -= _dmg;
