@@ -87,7 +87,7 @@ public class mTree{
 				}
 
 				if (checkNodeGridPosition (selectedDirection) == -1) {
-					Debug.Log ("Node Num: "+_nodeNum+" Selected Direction: "+selectedDirection.x+" "+selectedDirection.y+" Current Grid Pos: "+currentNode.getGridPosition().x+" "+currentNode.getGridPosition().y);
+//					Debug.Log ("Node Num: "+_nodeNum+" Selected Direction: "+selectedDirection.x+" "+selectedDirection.y+" Current Grid Pos: "+currentNode.getGridPosition().x+" "+currentNode.getGridPosition().y);
 					directions.Add (selectedDirection);
 				}
 
@@ -132,6 +132,27 @@ public class mTree{
 			}
 		}
 		return endCount;
+	}
+
+	//Returns list of end room nodes
+	public List<int> getEndRoomIndices(){
+		List<int> endRooms = new List<int> ();
+		for (int i=0; i< nodes.Count; i++) {
+			Node _n = nodes[i];
+			if (_n.getChildren() == null) {
+				endRooms.Add(i);
+			}
+		}
+		return endRooms;
+	}
+
+	public void makeBossRoom(){
+		int randomNum = Random.Range (0, GameManager.instance.numberOfBossRooms);
+
+		int endNode = getEndRoomIndices () [Random.Range (0, getEndRoomCount ())];
+		nodes [endNode].setRoomType (1);
+		nodes[endNode].setRoomID(randomNum);
+		Debug.Log ("BOSS ROOM: "+endNode+" ROOM ID: "+nodes[endNode].getRoomID()+" "+randomNum + " TYPE: " +nodes [endNode].getRoomType());
 	}
 
 	//Returns position of found number in array. If not found, return -1

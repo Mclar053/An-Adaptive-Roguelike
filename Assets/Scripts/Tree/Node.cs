@@ -8,12 +8,14 @@ public class Node{
 	private int parent;
 	private int[] children = null;
 	private int roomID;
+	private int type;
 	private Vector2 position;/*EDIT: Added grid position variable*/
 
 	//Default constructor
 	public Node(int _parent=-1, int _gridX=0, int _gridY=0, int _roomID=0){
 		parent = _parent;
 		roomID = _roomID;
+		type = 0;
 		position = new Vector2 (_gridX,_gridY);
 	}
 
@@ -23,6 +25,7 @@ public class Node{
 		parent = _n.getParent();
 		setChildren(_n.getChildren());
 		roomID = _n.getRoomID();
+		type = _n.getRoomType ();
 		position = _n.getGridPosition (); /*EDIT: Grid position assignmentment in copy constuctor*/
 	}
 
@@ -66,6 +69,10 @@ public class Node{
 		roomID = _id;
 	}
 
+	public void setRoomType(int _t){
+		type = _t;
+	}
+
 	/* GETTERS */
 
 	//Gets parent of this
@@ -88,6 +95,10 @@ public class Node{
 	//Get room if of this
 	public int getRoomID(){
 		return roomID;
+	}
+
+	public int getRoomType(){
+		return type;
 	}
 		
 	/* OTHER */

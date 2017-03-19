@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Room : MonoBehaviour {
+public class Room {
 
 	public int[,] layout;
 	public int[,] entities; //[0]-ID [1]-X  [2]-Y

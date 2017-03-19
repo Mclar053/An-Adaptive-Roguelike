@@ -81,5 +81,8 @@ public class PlayerMovement : movingObject {
 			transform.position = new Vector2 (7,7);
 			GameManager.instance.roomScript.changeRoom (currentGridPos.x, currentGridPos.y - 1);
 		}
+		if (other.tag == "NextFloor") {
+			GameManager.instance.nextLevel ();
+		}
 	}
 }

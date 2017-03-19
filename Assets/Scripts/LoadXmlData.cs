@@ -39,16 +39,53 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 				newRoom.setEntity (j, int.Parse(entities[j].Attributes["column"].Value), int.Parse(entities[j].Attributes["row"].Value), int.Parse(entities[j].Attributes["type"].Value));
 			}
 
-			rooms.Add(newRoom); 
+			if(roomsList[i].ChildNodes[3].InnerText == "Normal"){
+				rooms.Add(newRoom); 
+			} else if(roomsList[i].ChildNodes[3].InnerText == "Boss"){
+				bossRooms.Add (newRoom);
+			} else{
+				specialRooms.Add(newRoom);
+			}
 		}
 	}
 
+	//Room Counts
+	public int getNumberOfRooms(){
+		return rooms.Count;
+	}
+
+	public int getNumberOfBossRooms(){
+		return bossRooms.Count;
+	}
+
+	public int getNumberOfSpecialRooms(){
+		return specialRooms.Count;
+	}
+
+	//Normal rooms
 	public int[,] getRoomLayout(int _room){
-		Debug.Log (_room);
 		return rooms[_room].layout;
 	}
 
 	public int[,] getRoomEntities(int _room){
 		return rooms[_room].entities;
+	}
+
+	//Boss rooms
+	public int[,] getBossRoomLayout(int _room){
+		return bossRooms[_room].layout;
+	}
+
+	public int[,] getBossRoomEntities(int _room){
+		return bossRooms[_room].entities;
+	}
+
+	//Special rooms
+	public int[,] getSpecialRoomLayout(int _room){
+		return specialRooms[_room].layout;
+	}
+
+	public int[,] getSpecialRoomEntities(int _room){
+		return specialRooms[_room].entities;
 	}
 }

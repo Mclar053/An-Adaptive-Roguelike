@@ -14,6 +14,7 @@ public class RoomManager : MonoBehaviour {
 	public GameObject doorTopTile;
 	public GameObject doorBottomTile;
 	public GameObject floorTile;
+	public GameObject bossFloorTile;
 	public GameObject wallTile;
 	public GameObject gapTile;
 	public GameObject[] enemy;
@@ -25,7 +26,7 @@ public class RoomManager : MonoBehaviour {
 	//List of room objects
 	//private List<Room> rooms = new List<Room>(); //Holds each room for each index
 	private Transform[] roomHolder = new Transform[0];
-	public int currentRoom = 0; //Current room selected
+	public int currentRoom; //Current room selected
 	public Vector2 currentGridPosition = new Vector2(0,0);
 
 	void createLevel(int _level){
@@ -35,9 +36,12 @@ public class RoomManager : MonoBehaviour {
 		while (levelTree.getEndRoomCount () < 4) {
 			levelTree = new mTree (_level);
 		}
+		levelTree.makeBossRoom ();
 		List<Node> levelNodes = levelTree.getNodes ();
 
 		roomHolder = new Transform[levelNodes.Count];
+		currentRoom = 0;
+		currentGridPosition = new Vector2(0,0);
 
 		for (int i = 0; i < levelNodes.Count; i++) {
 			Node currentNode = levelNodes[i];
@@ -78,11 +82,29 @@ public class RoomManager : MonoBehaviour {
 				}
 			}
 
+			int[,] roomLayout, roomEntities;
+
+			roomLayout = new int[0, 0];
+			roomEntities = new int[0, 0];
+
+			Debug.Log (i+" TYPE: "+ currentNode.getRoomType()+" ID: "+currentNode.getRoomID());
+
+			if (currentNode.getRoomType () == 1) {
+				roomLayout = GameManager.instance.roomData.getBossRoomLayout (currentNode.getRoomID ());
+				roomEntities = GameManager.instance.roomData.getBossRoomEntities (currentNode.getRoomID ());
+			} else if (currentNode.getRoomType () == 2) {
+				roomLayout = GameManager.instance.roomData.getSpecialRoomLayout (currentNode.getRoomID ());
+				roomEntities = GameManager.instance.roomData.getSpecialRoomEntities (currentNode.getRoomID ());
+			} else {
+				roomLayout = GameManager.instance.roomData.getRoomLayout (currentNode.getRoomID ());
+				roomEntities = GameManager.instance.roomData.getRoomEntities (currentNode.getRoomID ());
+			}
+
 			Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doors[0],doors[1],doors[2],doors[3]));
 			roomHolder[i] = new GameObject ("Room"+i).transform;
-			createRoom (i, doors, GameManager.instance.roomData.getRoomLayout(currentNode.getRoomID()));
+			createRoom (i, doors, roomLayout);
 			if (i != 0) {
-				addEnemies (i, GameManager.instance.roomData.getRoomEntities (currentNode.getRoomID ())); //First room is safe
+				addEnemies (i, roomEntities); //First room is safe
 				roomHolder [i].gameObject.SetActive (false);
 			}
 		}
@@ -117,6 +139,9 @@ public class RoomManager : MonoBehaviour {
 				case 2: case 3:
 					toInstantiate = wallTile;
 					break;
+				case 4:
+					toInstantiate = bossFloorTile;
+					break;
 				default:
 					toInstantiate = floorTile;
 					break;
@@ -147,7 +172,7 @@ public class RoomManager : MonoBehaviour {
 
 	void addEnemies(int _room, int[,] _entities){
 		for(int i=0; i<_entities.GetLength(0); i++){
-			Debug.Log (System.String.Format("{0}, {1}, {2}, {3}",i,_entities[i,0],_entities[i,1],_entities[i,2]));
+//			Debug.Log (System.String.Format("{0}, {1}, {2}, {3}",i,_entities[i,0],_entities[i,1],_entities[i,2]));
 			GameObject instance = Instantiate (enemy[_entities[i,0]], new Vector3 (_entities[i,1],_entities[i,2], 0f), Quaternion.identity) as GameObject;
 			instance.transform.SetParent (roomHolder [_room]);
 		}
@@ -183,6 +208,7 @@ public class RoomManager : MonoBehaviour {
 			openDoor (GameObject.FindGameObjectWithTag ("DoorLeft"));
 			openDoor (GameObject.FindGameObjectWithTag ("DoorRight"));
 			openDoor (GameObject.FindGameObjectWithTag ("DoorTop"));
+			openDoor (GameObject.FindGameObjectWithTag ("NextFloor"));
 		}
 	}
 

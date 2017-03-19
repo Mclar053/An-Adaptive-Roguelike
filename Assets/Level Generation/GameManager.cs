@@ -7,9 +7,9 @@ public class GameManager : MonoBehaviour {
 	public RoomManager roomScript;
 	public LoadXmlData roomData;
 	private GUIStyle guiStyle = new GUIStyle();
-	public int numberOfRooms = 18;
+	public int numberOfRooms, numberOfBossRooms, numberOfSpecialRooms;
 
-	private int level = 3;
+	private int level = 1;
 
 	// Use this for initialization
 	void Awake () {
@@ -22,7 +22,16 @@ public class GameManager : MonoBehaviour {
 
 		roomScript = GetComponent<RoomManager> ();
 		roomData = GetComponent<LoadXmlData> ();
+
+		//Loads in room data from XML
 		roomData.loadRooms ();
+
+		//Sets constant of number of rooms in the game
+		numberOfRooms = roomData.getNumberOfRooms ();
+		numberOfBossRooms = roomData.getNumberOfBossRooms ();
+		numberOfSpecialRooms = roomData.getNumberOfSpecialRooms ();
+
+		//Sets up a level
 		InitGame ();
 		guiStyle.fontSize = 20;
 		guiStyle.normal.textColor = Color.white;
@@ -30,6 +39,11 @@ public class GameManager : MonoBehaviour {
 
 	void InitGame(){
 		roomScript.SetupLevel (level);
+	}
+
+	public void nextLevel(){
+		level++;
+		InitGame ();
 	}
 	
 	// Update is called once per frame
@@ -47,5 +61,6 @@ public class GameManager : MonoBehaviour {
 		GUI.Label (new Rect(10,75,100,25), "Fire Rate: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().fireDelay,guiStyle);
 		GUI.Label (new Rect(10,100,100,25), "Shot Speed: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().shotSpeed,guiStyle);
 		GUI.Label (new Rect(10,125,100,25), "Damage: "+GameObject.FindGameObjectWithTag("Player").GetComponent<movingObject>().dmg,guiStyle);
+		GUI.Label (new Rect(10,150,100,25), "Floor #: "+level,guiStyle);
 	}
 }
