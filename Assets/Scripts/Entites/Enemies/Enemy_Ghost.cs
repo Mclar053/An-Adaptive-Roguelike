@@ -4,7 +4,7 @@ using System.Collections;
 public class Enemy_Ghost : Enemy<Enemy_Ghost> {
 
 	override protected void Start (){
-		setStats(7,10,0,2,0,0,0);
+		setStats(7,13,0,2,0,0,0);
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		fsm = new StateMachine<Enemy_Ghost> (this);
 		fsm.changeState(new Ghost_RunToPlayer ());

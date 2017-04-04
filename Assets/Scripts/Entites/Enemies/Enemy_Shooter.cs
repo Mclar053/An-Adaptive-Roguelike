@@ -6,7 +6,7 @@ public class Enemy_Shooter : Enemy<Enemy_Shooter> {
 	protected override void Start (){
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		setStats(10,10,0,2,4,7,2);
-		lastFired = Time.time + 3f;
+		lastFired = Time.time + 1f;
 		fsm = new StateMachine<Enemy_Shooter> (this);
 		fsm.changeState( new Shooter_ShootPlayer ());
 	}

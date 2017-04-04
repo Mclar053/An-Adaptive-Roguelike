@@ -8,7 +8,7 @@ public class Enemy_Chaser : Enemy<Enemy_Chaser> {
 	// Use this for initialization
 	void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
-		setStats (15, 5, 0, 2, 20, 0, 0);
+		setStats (15, 16, 0, 2, 20, 0, 0);
 		fsm = new StateMachine<Enemy_Chaser> (this);
 		fsm.changeState (new Chaser_RunToPlayer());
 		pauseTime = 3f;

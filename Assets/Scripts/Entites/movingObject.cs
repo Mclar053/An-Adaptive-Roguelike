@@ -40,6 +40,7 @@ public abstract class movingObject : MonoBehaviour {
 	public void damage(float _dmg){
 		if (Time.time > lastHit + hitDelay) {
 			currentHitpoints -= _dmg;
+			gameObject.GetComponent<SpriteRenderer> ().color = new Color (1,currentHitpoints/maxHitpoints+0.3f,currentHitpoints/maxHitpoints+0.3f,1f);
 			lastHit = Time.time;
 		}
 	}

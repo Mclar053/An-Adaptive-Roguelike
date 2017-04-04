@@ -212,6 +212,12 @@ public class RoomManager : MonoBehaviour {
 		}
 	}
 
+//	void openPortal(GameObject _portal){
+//		if(_portal != null){
+//			_portal.GetComponent<Collider2D> ();
+//		}
+//	}
+
 	void openDoor(GameObject _door){
 		if(_door != null){
 			_door.GetComponent<Collider2D> ().isTrigger = true;
