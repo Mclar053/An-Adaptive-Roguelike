@@ -87,7 +87,7 @@ public class RoomManager : MonoBehaviour {
 			roomLayout = new int[0, 0];
 			roomEntities = new int[0, 0];
 
-			Debug.Log (i+" TYPE: "+ currentNode.getRoomType()+" ID: "+currentNode.getRoomID());
+			//Debug.Log (i+" TYPE: "+ currentNode.getRoomType()+" ID: "+currentNode.getRoomID());
 
 			if (currentNode.getRoomType () == 1) {
 				roomLayout = GameManager.instance.roomData.getBossRoomLayout (currentNode.getRoomID ());
@@ -100,7 +100,7 @@ public class RoomManager : MonoBehaviour {
 				roomEntities = GameManager.instance.roomData.getRoomEntities (currentNode.getRoomID ());
 			}
 
-			Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doors[0],doors[1],doors[2],doors[3]));
+			//Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doors[0],doors[1],doors[2],doors[3]));
 			roomHolder[i] = new GameObject ("Room"+i).transform;
 			createRoom (i, doors, roomLayout);
 			if (i != 0) {
@@ -202,14 +202,28 @@ public class RoomManager : MonoBehaviour {
 		roomHolder [currentRoom].gameObject.SetActive (true);
 	}
 
-	public void checkRoomComplete(){
+	public bool checkRoomComplete(){
 		if(GameObject.FindGameObjectsWithTag("Enemy").Length == 0){
 			openDoor (GameObject.FindGameObjectWithTag ("DoorBottom"));
 			openDoor (GameObject.FindGameObjectWithTag ("DoorLeft"));
 			openDoor (GameObject.FindGameObjectWithTag ("DoorRight"));
 			openDoor (GameObject.FindGameObjectWithTag ("DoorTop"));
 			openDoor (GameObject.FindGameObjectWithTag ("NextFloor"));
+			return true;
 		}
+		return false;
+	}
+
+	/*@Input
+	 * 
+	 * -----
+	 * @Output
+	 * 
+	 * -----
+	 * @Method: Return room id of a particular node in the level tree
+	*/
+	public int getLevelNodeRoomID(int _nodeIndex){
+		return levelTree.getNode (_nodeIndex).getRoomID ();
 	}
 
 //	void openPortal(GameObject _portal){
@@ -226,6 +240,7 @@ public class RoomManager : MonoBehaviour {
 
 	public void SetupLevel(int _level){
 		createLevel (_level);
+		GameManager.instance.statistics.newFloor (levelTree.getSize());
 		//roomSetup ();
 	}
 }
