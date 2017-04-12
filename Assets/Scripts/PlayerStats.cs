@@ -39,9 +39,10 @@ public class PlayerStats : MonoBehaviour{
 		return roomStats [_roomIndex];
 	}
 
-	public void createCurrentFloorRoom(int _roomIndex){
+	public void createCurrentFloorRoom(int _roomIndex, int _roomID){
 		if (currentFloor [_roomIndex] == null) {
 			currentFloor [_roomIndex] = new RoomStats ();
+			currentFloor [_roomIndex].roomID = _roomID;
 		}
 	}
 
@@ -86,6 +87,26 @@ public class PlayerStats : MonoBehaviour{
 		currentFloor[_roomIndex].completed ();
 	}
 
+	public bool firstEnemyKilled(int _roomIndex){
+		if (currentFloor [_roomIndex].timeToKillFirstEnemy == 0) {
+			currentFloor [_roomIndex].timeToKillFirstEnemy = Time.time;
+			return true;
+		}
+		return false;
+	}
+
+	public bool firstDamageToPlayer(int _roomIndex){
+		if (currentFloor [_roomIndex].timeToGetHit == 0) {
+			currentFloor [_roomIndex].timeToGetHit = Time.time;
+			return true;
+		}
+		return false;
+	}
+
+	public void playerDamaged(int _roomIndex, float _dmg){
+		currentFloor [_roomIndex].damageTakenInRoom+=_dmg;
+	}
+
 	public bool roomCompleted(int _roomIndex){
 		if (currentFloor [_roomIndex] != null) {
 			if (currentFloor [_roomIndex].isComplete ()) {
@@ -99,7 +120,7 @@ public class PlayerStats : MonoBehaviour{
 		Debug.Log ("-------ALL ROOM STATISTICS-------");
 		foreach (KeyValuePair<int, List<RoomStats>> _key in roomStats) {
 			for (int i = 0; i < _key.Value.Count; i++) {
-				Debug.Log (System.String.Format("{0}:{1} StartTime:{2} EndTime:{3}",_key.Key, i, _key.Value[i].startTime,_key.Value[i].endTime));
+				Debug.Log (System.String.Format("{0}:{1} StartTime:{2} EndTime:{3} EnemyKilled:{4} PlayerDamaged:{5}",_key.Key, i, _key.Value[i].startTime,_key.Value[i].endTime,_key.Value[i].timeToKillFirstEnemy,_key.Value[i].damageTakenInRoom));
 			}
 		}
 	}
@@ -108,7 +129,7 @@ public class PlayerStats : MonoBehaviour{
 		Debug.Log ("-------CURRENT ROOM STATISTICS-------");
 		for (int i = 0; i < currentFloor.Length; i++) {
 			if (currentFloor [i] != null) {
-				Debug.Log (System.String.Format("{0}: StartTime:{1}  EndTime:{2}",i,currentFloor[i].startTime,currentFloor[i].endTime));
+				Debug.Log (System.String.Format("{0}: StartTime:{1}  EndTime:{2} EnemyKilled:{3} PlayerDamaged:{4}",i,currentFloor[i].startTime,currentFloor[i].endTime,currentFloor[i].timeToKillFirstEnemy,currentFloor[i].damageTakenInRoom));
 			}
 		}
 	}

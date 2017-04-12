@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour {
 	public void changeRoom(float _newGridX, float _newGridY){
 		roomScript.changeRoom (_newGridX,_newGridY);
 		if(!statistics.roomCompleted(roomScript.currentRoom)){
-			statistics.createCurrentFloorRoom (roomScript.currentRoom);
+			statistics.createCurrentFloorRoom (roomScript.currentRoom, roomScript.getLevelNodeRoomID(roomScript.currentRoom));
 			statistics.startRoomTime (roomScript.currentRoom);
 		}
 	}
