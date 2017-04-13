@@ -9,7 +9,13 @@ public class PlayerStats : MonoBehaviour{
 	RoomStats[] currentFloor;
 
 	void Awake(){
+		userID = -1;
 		roomStats = new Dictionary<int, List<RoomStats>> ();
+	}
+
+	public void loadStats(int _id, Dictionary<int,List<RoomStats>> _stats){
+		userID = _id;
+		roomStats = _stats;
 	}
 
 	public void newFloor(int _numberOfRooms){
@@ -37,6 +43,13 @@ public class PlayerStats : MonoBehaviour{
 	 */
 	public List<RoomStats> getRoomInstances(int _roomIndex){
 		return roomStats [_roomIndex];
+	}
+
+	public bool roomTypePlayed(int _roomID){
+		if(roomStats.ContainsKey(_roomID)){
+			return true;
+		}
+		return false;
 	}
 
 	public void createCurrentFloorRoom(int _roomIndex, int _roomID){

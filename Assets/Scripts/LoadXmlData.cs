@@ -7,11 +7,20 @@ using System.IO;
 
 public class LoadXmlData : MonoBehaviour{ // the Class
 	public TextAsset GameAsset;
+	public TextAsset PlayerData;
 
 	List<Room> rooms = new List<Room>();
 	List<Room> bossRooms = new List<Room>();
 	List<Room> specialRooms = new List<Room>();
 
+	List<PlayerStats> playerProfiles = new List<PlayerStats>();
+
+	/* Reference: http://unitynoobs.blogspot.co.uk/2011/02/xml-loading-data-from-xml-file.html
+	 * Author: Rodrigo Barros 
+	 * 
+	 * 
+	 * 
+	 */
 	public void loadRooms(){
 		XmlDocument xmlDoc = new XmlDocument(); // xmlDoc is the new xml document.
 		xmlDoc.LoadXml(GameAsset.text); // load the file.
@@ -46,6 +55,50 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 			} else{
 				specialRooms.Add(newRoom);
 			}
+		}
+	}
+
+	/* Reference: https://msdn.microsoft.com/en-us/library/dw229a22(v=vs.110).aspx
+	 * 
+	 * 
+	 */
+	public void savePlayerProfiles(){
+		XmlDocument profileXML = new XmlDocument ();
+		string xmlToSave = "<AllPlayers>";
+		for (int i = 0; i < playerProfiles.Count; i++) {
+			xmlToSave += "<player id=" + i + "><roomStats>";
+
+			for (int j = 0; j < rooms.Count + bossRooms.Count + specialRooms.Count; j++) {
+				if (playerProfiles [i].roomTypePlayed (j)) {
+					xmlToSave += "<room id=" + j + ">";
+						
+					List<RoomStats> currentPlayedRoomStats = playerProfiles [i].getRoomInstances (j);
+					for (int k = 0; k < currentPlayedRoomStats.Count; k++) {
+						xmlToSave += "<stat id=" + k + " startTime=" + currentPlayedRoomStats [k].startTime + " endTime=" + currentPlayedRoomStats [k].endTime + " firstEnemyTime=" + currentPlayedRoomStats [k].timeToKillFirstEnemy + " hitTime=" + currentPlayedRoomStats [k].timeToGetHit + " damageTaken=" + currentPlayedRoomStats [k].damageTakenInRoom + "/>";
+					}
+					xmlToSave += "<room/>";
+				}
+			}
+			xmlToSave += "</roomStats></player>";
+		}
+		xmlToSave += "</AllPlayers>";
+		profileXML.LoadXml (xmlToSave);
+		profileXML.Save ("player-profiles.xml");
+	}
+
+	public void loadPlayerProfiles(){
+
+	}
+
+	public PlayerStats loadPlayer(int _playerID){
+		return playerProfiles [_playerID];
+	}
+
+	public void savePlayer(PlayerStats _player, int _playerID){
+		if (_playerID < 0 || _playerID >= playerProfiles.Count) {
+			playerProfiles.Add (_player);
+		} else {
+			playerProfiles [_playerID] = _player;
 		}
 	}
 

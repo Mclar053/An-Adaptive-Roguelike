@@ -235,6 +235,7 @@ public class RoomManager : MonoBehaviour {
 	void openDoor(GameObject _door){
 		if(_door != null){
 			_door.GetComponent<Collider2D> ().isTrigger = true;
+			_door.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f);
 		}
 	}
 
