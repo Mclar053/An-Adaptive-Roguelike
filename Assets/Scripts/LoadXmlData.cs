@@ -66,28 +66,54 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 		XmlDocument profileXML = new XmlDocument ();
 		string xmlToSave = "<AllPlayers>";
 		for (int i = 0; i < playerProfiles.Count; i++) {
-			xmlToSave += "<player id=" + i + "><roomStats>";
+			xmlToSave += "<player id='" + playerProfiles[i].userID + "'><roomStats>";
 
 			for (int j = 0; j < rooms.Count + bossRooms.Count + specialRooms.Count; j++) {
 				if (playerProfiles [i].roomTypePlayed (j)) {
-					xmlToSave += "<room id=" + j + ">";
+					xmlToSave += "<room id='" + j + "'>";
 						
 					List<RoomStats> currentPlayedRoomStats = playerProfiles [i].getRoomInstances (j);
 					for (int k = 0; k < currentPlayedRoomStats.Count; k++) {
-						xmlToSave += "<stat id=" + k + " startTime=" + currentPlayedRoomStats [k].startTime + " endTime=" + currentPlayedRoomStats [k].endTime + " firstEnemyTime=" + currentPlayedRoomStats [k].timeToKillFirstEnemy + " hitTime=" + currentPlayedRoomStats [k].timeToGetHit + " damageTaken=" + currentPlayedRoomStats [k].damageTakenInRoom + "/>";
+						xmlToSave += "<stat id='" + k + "' startTime='" + currentPlayedRoomStats [k].startTime + "' endTime='" + currentPlayedRoomStats [k].endTime + "' firstEnemyTime='" + currentPlayedRoomStats [k].timeToKillFirstEnemy + "' hitTime='" + currentPlayedRoomStats [k].timeToGetHit + "' damageTaken='" + currentPlayedRoomStats [k].damageTakenInRoom + "'/>";
 					}
-					xmlToSave += "<room/>";
+					xmlToSave += "</room>";
 				}
 			}
 			xmlToSave += "</roomStats></player>";
 		}
 		xmlToSave += "</AllPlayers>";
 		profileXML.LoadXml (xmlToSave);
-		profileXML.Save ("player-profiles.xml");
+		profileXML.Save ("Assets/player-profiles.xml");
 	}
 
 	public void loadPlayerProfiles(){
+		XmlDocument profileXML = new XmlDocument ();
+		profileXML.LoadXml (PlayerData.text);
+		XmlNodeList players = profileXML.GetElementsByTagName("player");
+		for(int i=0; i<players.Count; i++){
+			PlayerStats newPlayer = new PlayerStats ();
+			newPlayer.resetPlayerStats ();
+			newPlayer.userID = int.Parse(players [i].Attributes ["id"].Value);
 
+			XmlNodeList playerRooms = players [i].ChildNodes[0].ChildNodes;
+			for(int j=0; j<playerRooms.Count; j++){
+				XmlNodeList roomInstances = playerRooms [j].ChildNodes;
+
+				for(int k=0; k<roomInstances.Count; k++){
+					RoomStats instance = new RoomStats ();
+					instance.roomID = int.Parse(playerRooms[j].Attributes["id"].Value);
+					instance.startTime = float.Parse(roomInstances[k].Attributes["startTime"].Value);
+					instance.endTime = float.Parse(roomInstances[k].Attributes["endTime"].Value);
+					instance.timeToKillFirstEnemy = float.Parse(roomInstances[k].Attributes["firstEnemyTime"].Value);
+					instance.timeToGetHit = float.Parse(roomInstances[k].Attributes["hitTime"].Value);
+					instance.damageTakenInRoom = float.Parse(roomInstances[k].Attributes["damageTaken"].Value);
+
+					newPlayer.createInstance (instance);
+				}
+			}
+			newPlayer.printStats ();
+			playerProfiles.Add (newPlayer);
+		}
 	}
 
 	public PlayerStats loadPlayer(int _playerID){
@@ -115,6 +141,10 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 		return specialRooms.Count;
 	}
 
+	public int getTotalNumberOfRooms(){
+		return rooms.Count + bossRooms.Count + specialRooms.Count;
+	}
+
 	//Normal rooms
 	public int[,] getRoomLayout(int _room){
 		return rooms[_room].layout;
@@ -140,5 +170,9 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 
 	public int[,] getSpecialRoomEntities(int _room){
 		return specialRooms[_room].entities;
+	}
+
+	public void printPlayers(){
+		Debug.Log (playerProfiles.Count);
 	}
 }

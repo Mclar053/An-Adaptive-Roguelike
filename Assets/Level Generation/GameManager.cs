@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour {
 
 		//Loads in room data from XML
 		roomData.loadRooms ();
+		roomData.loadPlayerProfiles ();
+		statistics.loadPlayer (roomData.loadPlayer (0));
 
 		//Sets constant of number of rooms in the game
 		numberOfRooms = roomData.getNumberOfRooms ();
@@ -48,6 +50,8 @@ public class GameManager : MonoBehaviour {
 	public void nextLevel(){
 		level++;
 		statistics.storeFloorData ();
+		roomData.savePlayer (statistics,statistics.userID);
+		roomData.savePlayerProfiles ();
 		InitGame ();
 	}
 	
@@ -65,6 +69,9 @@ public class GameManager : MonoBehaviour {
 		}
 		if (Input.GetKeyDown (KeyCode.J)) {
 			statistics.printCurrentFloorStats ();
+		}
+		if (Input.GetKeyDown (KeyCode.M)) {
+			roomData.printPlayers ();
 		}
 	}
 

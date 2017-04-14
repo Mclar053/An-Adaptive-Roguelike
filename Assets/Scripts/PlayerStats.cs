@@ -4,18 +4,19 @@ using System.Collections.Generic;
 
 public class PlayerStats : MonoBehaviour{
 
-	int userID;
-	Dictionary<int,List<RoomStats>> roomStats;
+	public int userID = 0;
+	Dictionary<int,List<RoomStats>> roomStats = new Dictionary<int, List<RoomStats>> ();
 	RoomStats[] currentFloor;
 
 	void Awake(){
-		userID = -1;
-		roomStats = new Dictionary<int, List<RoomStats>> ();
 	}
 
-	public void loadStats(int _id, Dictionary<int,List<RoomStats>> _stats){
-		userID = _id;
-		roomStats = _stats;
+	public void resetPlayerStats(){
+	}
+
+	public void loadPlayer(PlayerStats _player){
+		userID = _player.userID;
+		copyRoomStats (_player);
 	}
 
 	public void newFloor(int _numberOfRooms){
@@ -33,6 +34,22 @@ public class PlayerStats : MonoBehaviour{
 		}
 	}
 
+	public void copyRoomStats(PlayerStats _player){
+		for(int i=0; i<GameManager.instance.roomData.getTotalNumberOfRooms(); i++){
+			this.setRoomInstances (i, _player.getRoomInstances (i));
+		}
+	}
+
+	public void setRoomInstances(int _roomIndex, List<RoomStats> _stats){
+		if (_stats != null) {
+			if (!roomStats.ContainsKey (_roomIndex)) {
+				roomStats.Add (_roomIndex, _stats);
+			} else {
+				roomStats [_roomIndex] = _stats;
+			}
+		}
+	}
+
 	/*@Input:
 	 * int _roomIndex -> the index of the room that has been selected
 	 * ----
@@ -42,6 +59,9 @@ public class PlayerStats : MonoBehaviour{
 	 * @Method: Selects a room and returns all the instances of that room
 	 */
 	public List<RoomStats> getRoomInstances(int _roomIndex){
+		if(!roomStats.ContainsKey(_roomIndex)){
+			return null;
+		}
 		return roomStats [_roomIndex];
 	}
 
