@@ -35,7 +35,7 @@ public class PlayerMovement : movingObject {
 		if(fire()){
 			bool makeBullet = false;
 			Vector2 movementVector = new Vector2(Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw("Vertical"));
-			Vector2 clampedVector = Vector2.ClampMagnitude(movementVector,0.4f);
+			Vector2 clampedVector = Vector2.ClampMagnitude(movementVector,0.2f);
 			Vector2 directionVector = new Vector2 ();
 
 			if(Input.GetKey(KeyCode.DownArrow)){
