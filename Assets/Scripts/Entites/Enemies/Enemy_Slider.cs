@@ -38,13 +38,14 @@ public class Enemy_Slider : Enemy<Enemy_Slider> {
 		} else if(direction.x == -1 && direction.y == 0){
 			direction = new Vector2 (0,-1);
 		}
+		transform.Rotate (0,0,90);
 	}
 }
 
 public class Slider_ShootPlayer : State<Enemy_Slider>{
 
 	public void enter(Enemy_Slider agent){
-		agent.direction = new Vector2 (0,-1);
+		agent.direction = new Vector2 (0,1);
 	}
 
 	public void execute(Enemy_Slider agent){

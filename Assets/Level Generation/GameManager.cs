@@ -222,3 +222,6 @@ public enum GameStates {
 	GameOver,
 	PlayerSelect
 }
+
+//Change from Box to Edge Colliders
+//Reference: https://forum.unity3d.com/threads/rigidbody-getting-stuck-on-tiled-wall.220861/
