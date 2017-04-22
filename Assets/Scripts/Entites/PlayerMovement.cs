@@ -12,6 +12,7 @@ public class PlayerMovement : movingObject {
 	override protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		resetPlayer ();
+		currentColour = new Color (1f, 1f, 1f, 1f);
 	}
 
 	override protected void FixedUpdate () {

@@ -11,6 +11,7 @@ public class Enemy_Slider : Enemy<Enemy_Slider> {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		fsm = new StateMachine<Enemy_Slider> (this);
 		fsm.changeState (new Slider_ShootPlayer());
+		currentColour = new Color (1f, 1f, 1f, 1f);
 	}
 
 	override protected void OnCollisionStay2D(Collision2D other){

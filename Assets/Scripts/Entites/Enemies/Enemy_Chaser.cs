@@ -6,13 +6,14 @@ public class Enemy_Chaser : Enemy<Enemy_Chaser> {
 	public float pauseTime, chaseTime;
 
 	// Use this for initialization
-	void Start () {
+	override protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		setStats (15, 16, 0, 2, 20, 0, 0);
 		fsm = new StateMachine<Enemy_Chaser> (this);
 		fsm.changeState (new Chaser_RunToPlayer());
 		pauseTime = 3f;
 		chaseTime = 5f;
+		currentColour = new Color (1f, 1f, 1f, 1f);
 	}
 
 	public bool checkStateChange(float _startTime, float _timeInterval){
@@ -20,6 +21,10 @@ public class Enemy_Chaser : Enemy<Enemy_Chaser> {
 			return true;
 		}
 		return false;
+	}
+
+	public void charge(float _startTime, float _timeInterval){
+		currentColour = new Color ((Time.time - _startTime) / _timeInterval, (Time.time - _startTime) / _timeInterval, 1f);
 	}
 
 }
@@ -53,8 +58,10 @@ public class Chaser_Pause : State<Enemy_Chaser>{
 		if(agent.checkStateChange(startTime, agent.pauseTime)){
 			agent.fsm.changeState (new Chaser_RunToPlayer());
 		}
+		agent.charge (startTime, agent.pauseTime);
 	}
 
 	public void exit(Enemy_Chaser agent){
+		//agent.normalColor ();
 	}
 }

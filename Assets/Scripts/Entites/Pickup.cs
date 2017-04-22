@@ -9,6 +9,7 @@ public abstract class Pickup : movingObject {
 
 	override protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
+		currentColour = new Color (1f, 1f, 1f, 1f);
 	}
 
 	public void setValue(int _s){

@@ -6,6 +6,7 @@ public class Bullet_Enemy : Bullet {
 	// Use this for initialization
 	override protected void Start () {
 		timeCreated = Time.time;
+		currentColour = new Color (1f, 1f, 1f, 1f);
 	}
 
 	override protected void OnTriggerEnter2D(Collider2D other){

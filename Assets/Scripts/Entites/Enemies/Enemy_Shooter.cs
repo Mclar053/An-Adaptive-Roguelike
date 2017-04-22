@@ -9,6 +9,7 @@ public class Enemy_Shooter : Enemy<Enemy_Shooter> {
 		lastFired = Time.time + 1f;
 		fsm = new StateMachine<Enemy_Shooter> (this);
 		fsm.changeState( new Shooter_ShootPlayer ());
+		currentColour = new Color (1f, 1f, 1f, 1f);
 	}
 
 	public void fireAtPlayer(){
@@ -22,6 +23,10 @@ public class Enemy_Shooter : Enemy<Enemy_Shooter> {
 			fireDelay = (Vector2.SqrMagnitude (target.position - GetComponent<Rigidbody2D> ().transform.position)/10f) + 0.7f;
 		}
 	}
+
+	public void charge(){
+		currentColour = new Color (1f - (Time.time - lastFired) / fireDelay, 1f - (Time.time - lastFired) / fireDelay, 1f);
+	}
 }
 
 public class Shooter_ShootPlayer : State<Enemy_Shooter>{
@@ -32,6 +37,7 @@ public class Shooter_ShootPlayer : State<Enemy_Shooter>{
 
 	public void execute(Enemy_Shooter agent){
 		agent.fireAtPlayer ();
+		agent.charge ();
 	}
 
 	public void exit(Enemy_Shooter agent){

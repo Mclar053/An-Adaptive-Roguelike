@@ -9,6 +9,7 @@ public class Enemy_Walker : Enemy<Enemy_Walker> {
 		setStats (12, 10, 0, 2, 20, 0, 0);
 		fsm = new StateMachine<Enemy_Walker> (this);
 		fsm.changeState (new Walker_RunToPlayer());
+		currentColour = new Color (1f, 1f, 1f, 1f);
 	}
 }
 

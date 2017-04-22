@@ -5,6 +5,7 @@ public abstract class movingObject : MonoBehaviour {
 	
 	public float speed, maxHitpoints, currentHitpoints, hitDelay, dmg, fireDelay, shotSpeed, range;
 	public float lastHit, lastFired;
+	protected Color currentColour;
 	
 	virtual protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
@@ -14,7 +15,7 @@ public abstract class movingObject : MonoBehaviour {
 		if (Time.time < lastHit + 0.05f) {
 			gameObject.GetComponent<SpriteRenderer> ().color = new Color (1f, 0f, 0f, 1f);
 		} else {
-			gameObject.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
+			gameObject.GetComponent<SpriteRenderer> ().color = currentColour;
 		}
 	}
 
