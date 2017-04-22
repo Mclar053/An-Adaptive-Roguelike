@@ -17,10 +17,8 @@ public class PlayerStats {
 
 	public bool loadPlayer(PlayerStats _player){
 		if (_player == null) {
-			Debug.Log ("Player null");
 			return false;
 		} else{
-			Debug.Log (_player.userID);
 			userID = _player.userID;
 			copyRoomStats (_player);
 			return true;

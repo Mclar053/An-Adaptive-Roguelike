@@ -118,11 +118,8 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 
 	public PlayerStats loadPlayer(int _playerID){
 		if (_playerID < playerProfiles.Count) {
-			Debug.Log (_playerID+" "+playerProfiles.Count);
-			Debug.Log (playerProfiles [_playerID]);
 			return playerProfiles [_playerID];
 		}
-		Debug.Log ("null");
 		return null;
 	}
 
