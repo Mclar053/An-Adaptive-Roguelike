@@ -7,11 +7,13 @@ using System.Collections;
 
 public class PlayerMovement : movingObject {
 
+	int score;
+
 	override protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		maxHitpoints = 20;
 		currentHitpoints = maxHitpoints;
-		speed = 30;
+		speed = 35;
 		hitDelay = 0.5f;
 		dmg = 3;
 		fireDelay = 0.5f;
@@ -29,7 +31,7 @@ public class PlayerMovement : movingObject {
 		GetComponent<Rigidbody2D>().AddForce (Vector3.ClampMagnitude(movementVector,1) * speed);
 	}
 
-	void Update(){
+	override protected void Update(){
 
 		//Manages if the player can firing and checks what direction they are firing in
 		if(fire()){
@@ -60,6 +62,13 @@ public class PlayerMovement : movingObject {
 				lastFired = Time.time;
 			}
 
+		}
+
+		//Checks if player has been hit and display that to user
+		if (Time.time < lastHit + hitDelay) {
+			gameObject.GetComponent<SpriteRenderer> ().color = new Color (1f, 0f, 0f, 1f);
+		} else {
+			gameObject.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
 		}
 	}
 

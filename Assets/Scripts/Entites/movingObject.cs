@@ -10,6 +10,14 @@ public abstract class movingObject : MonoBehaviour {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 	}
 
+	virtual protected void Update(){
+		if (Time.time < lastHit + 0.05f) {
+			gameObject.GetComponent<SpriteRenderer> ().color = new Color (1f, 0f, 0f, 1f);
+		} else {
+			gameObject.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 1f);
+		}
+	}
+
 	virtual protected void FixedUpdate () {
 		
 	}
@@ -40,7 +48,7 @@ public abstract class movingObject : MonoBehaviour {
 	public void damage(float _dmg){
 		if (Time.time > lastHit + hitDelay) {
 			currentHitpoints -= _dmg;
-			gameObject.GetComponent<SpriteRenderer> ().color = new Color (1,currentHitpoints/maxHitpoints+0.3f,currentHitpoints/maxHitpoints+0.3f,1f);
+			//gameObject.GetComponent<SpriteRenderer> ().color = new Color (1,currentHitpoints/maxHitpoints+0.3f,currentHitpoints/maxHitpoints+0.3f,1f);
 			lastHit = Time.time;
 			if (gameObject.tag == "Player") {
 				GameManager.instance.statistics.playerDamaged (GameManager.instance.roomScript.currentRoom,_dmg);
