@@ -2,21 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerStats : MonoBehaviour{
+public class PlayerStats {
 
 	public int userID = 0;
 	Dictionary<int,List<RoomStats>> roomStats = new Dictionary<int, List<RoomStats>> ();
 	RoomStats[] currentFloor;
 
-	void Awake(){
+	public PlayerStats(){
+
 	}
 
 	public void resetPlayerStats(){
 	}
 
-	public void loadPlayer(PlayerStats _player){
-		userID = _player.userID;
-		copyRoomStats (_player);
+	public bool loadPlayer(PlayerStats _player){
+		if (_player == null) {
+			Debug.Log ("Player null");
+			return false;
+		} else{
+			Debug.Log (_player.userID);
+			userID = _player.userID;
+			copyRoomStats (_player);
+			return true;
+		}
+
 	}
 
 	public void newFloor(int _numberOfRooms){

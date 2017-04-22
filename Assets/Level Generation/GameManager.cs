@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 	public LoadXmlData roomData;
 	private GUIStyle guiStyle = new GUIStyle();
 	public int numberOfRooms, numberOfBossRooms, numberOfSpecialRooms;
+	private string playerSelectText;
+	private string playerSelectErrorMessage;
 
 	private int level = 1;
 	private GameStates currentState;
@@ -27,22 +29,21 @@ public class GameManager : MonoBehaviour {
 
 		roomScript = GetComponent<RoomManager> ();
 		roomData = GetComponent<LoadXmlData> ();
-		statistics = GetComponent<PlayerStats> ();
+		statistics = new PlayerStats ();
 		scoreManager = GetComponent<ScoreManager> ();
 
 		//Loads in room data from XML
 		roomData.loadRooms ();
 		roomData.loadPlayerProfiles ();
-		statistics.loadPlayer (roomData.loadPlayer (0));
 
 		//Sets constant of number of rooms in the game
 		numberOfRooms = roomData.getNumberOfRooms ();
 		numberOfBossRooms = roomData.getNumberOfBossRooms ();
 		numberOfSpecialRooms = roomData.getNumberOfSpecialRooms ();
 
-		GameManager.instance.changeState (GameStates.MainGame);
+		GameManager.instance.changeState (GameStates.MainMenu);
 		//Sets up a level
-		InitGame ();
+		//InitGame ();
 		guiStyle.fontSize = 20;
 		guiStyle.normal.textColor = Color.white;
 	}
@@ -64,9 +65,9 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	//@Method: Checks if the room is complete and [FOR DEBUGGING ONLY] if the 'r' key is pressed to reset the level
 	void Update () {
-		if (GameManager.instance.CurrentState () == GameStates.MainGame) {
+		if (GameManager.instance.CurrentState () == GameStates.MainGame) { //-----Main Game
 			if (roomScript.checkRoomComplete () && !statistics.roomCompleted (roomScript.currentRoom)) {
-				statistics.endRoomTime (roomScript.currentRoom);
+				statistics.endRoomTime (roomScript.currentRoom); 
 				if (roomScript.currentRoom != 0) {
 					roomScript.createPickup ();
 				}
@@ -86,9 +87,47 @@ public class GameManager : MonoBehaviour {
 			if (Input.GetKeyDown (KeyCode.RightBracket)) {
 				debug = !debug;
 			}
-		} else if (GameManager.instance.CurrentState () == GameStates.GameOver) {
+		} else if (GameManager.instance.CurrentState () == GameStates.GameOver) {//-----Game Over
 			if (Input.GetKeyDown (KeyCode.Space)) {
 				GameManager.instance.changeState (GameStates.MainGame);
+			}
+			if (Input.GetKeyDown (KeyCode.Escape)) {
+				GameManager.instance.changeState (GameStates.MainMenu);
+			}
+		} else if (GameManager.instance.CurrentState () == GameStates.PlayerSelect) {//-----Player Select
+			string keyPressed = Input.inputString;
+			int number;
+			if(int.TryParse(keyPressed,out number)){
+				playerSelectText += number;
+			}
+
+			if ((Input.GetKeyDown (KeyCode.Backspace) || Input.GetKeyDown (KeyCode.Delete)) && playerSelectText.Length > 0) {
+				playerSelectText = playerSelectText.Substring (0, playerSelectText.Length - 1);
+			}
+			if (Input.GetKeyDown (KeyCode.Space)) {
+
+				if (playerSelectText == "") {
+					playerSelectErrorMessage = "Please Enter A Player ID";
+				} else{
+					bool loadedPlayer = statistics.loadPlayer (roomData.loadPlayer (int.Parse (playerSelectText)));
+					if (loadedPlayer) {
+						GameManager.instance.changeState (GameStates.MainGame);
+						playerSelectErrorMessage = "";
+					} else {
+						playerSelectErrorMessage = "ID Entered Does Not Exist";
+					}
+				} 
+			}
+			if (Input.GetKeyDown (KeyCode.Escape)) {
+				GameManager.instance.changeState (GameStates.MainMenu);
+			}
+
+		} else if (GameManager.instance.CurrentState () == GameStates.MainMenu) {//-----Main Menu
+			if (Input.GetKeyDown ("1")) {
+				statistics.userID = roomData.getNewPlayerID ();
+				GameManager.instance.changeState (GameStates.MainGame);
+			} else if (Input.GetKeyDown ("2")) {
+				GameManager.instance.changeState (GameStates.PlayerSelect);
 			}
 		}
 	}
@@ -104,7 +143,11 @@ public class GameManager : MonoBehaviour {
 
 			switch (_state) {
 				case GameStates.MainMenu:
-
+					
+					break;
+				case GameStates.PlayerSelect:
+					playerSelectText = "";
+					playerSelectErrorMessage = "";
 					break;
 				case GameStates.MainGame:
 					scoreManager.resetScore ();
@@ -132,10 +175,21 @@ public class GameManager : MonoBehaviour {
 
 	//@Method: [FOR DEBUGGING ONLY] Draws player stats to the screen
 	void OnGUI(){
-		if (GameManager.instance.CurrentState () == GameStates.MainGame) {
+		if (GameManager.instance.CurrentState () == GameStates.MainMenu) {
+			GUI.Label (new Rect (10, 0, 300, 25), "An Adaptive Roguelike", guiStyle);
+			GUI.Label (new Rect (10, 40, 100, 25), "1 - New Player", guiStyle);
+			GUI.Label (new Rect (10, 65, 100, 25), "2 - Select Player", guiStyle);
+		} else if (GameManager.instance.CurrentState () == GameStates.PlayerSelect) {
+			GUI.Label (new Rect (10, 0, 100, 25), "Select Player", guiStyle);
+			GUI.Label (new Rect (10, 40, 200, 25), "="+playerSelectText+"=", guiStyle);
+			GUI.Label (new Rect (10, 65, 200, 25), playerSelectErrorMessage, guiStyle);
+			GUI.Label (new Rect (10, 90, 200, 25), "Press Space To Continue", guiStyle);
+			GUI.Label (new Rect (10, 115, 300, 25), "Press Escape To Return To The Main Menu", guiStyle);
+		}
+		else if (GameManager.instance.CurrentState () == GameStates.MainGame) {
 			GUI.Label (new Rect (10, 25, 100, 25), "Health: " + GameObject.FindGameObjectWithTag ("Player").GetComponent<movingObject> ().currentHitpoints + "/" + GameObject.FindGameObjectWithTag ("Player").GetComponent<movingObject> ().maxHitpoints, guiStyle);
 			GUI.Label (new Rect (10, 0, 100, 25), "Floor #: " + level, guiStyle);
-			GUI.Label (new Rect (10, 50, 100, 25), "Score: " + GameManager.instance.scoreManager.getScore(), guiStyle);
+			GUI.Label (new Rect (10, 50, 100, 25), "Score: " + GameManager.instance.scoreManager.getScore (), guiStyle);
 
 			if (debug) {
 				GUI.Label (new Rect (10, 75, 100, 25), "Speed: " + GameObject.FindGameObjectWithTag ("Player").GetComponent<movingObject> ().speed, guiStyle);
@@ -143,12 +197,13 @@ public class GameManager : MonoBehaviour {
 				GUI.Label (new Rect (10, 125, 100, 25), "Fire Rate: " + GameObject.FindGameObjectWithTag ("Player").GetComponent<movingObject> ().fireDelay, guiStyle);
 				GUI.Label (new Rect (10, 150, 100, 25), "Shot Speed: " + GameObject.FindGameObjectWithTag ("Player").GetComponent<movingObject> ().shotSpeed, guiStyle);
 				GUI.Label (new Rect (10, 175, 100, 25), "Damage: " + GameObject.FindGameObjectWithTag ("Player").GetComponent<movingObject> ().dmg, guiStyle);
+				GUI.Label (new Rect (10, 225, 100, 25), "Player ID: " + GameManager.instance.statistics.userID, guiStyle);
 			}
-		}
-		else if (GameManager.instance.CurrentState () == GameStates.GameOver) {
+		} else if (GameManager.instance.CurrentState () == GameStates.GameOver) {
 			GUI.Label (new Rect (10, 0, 100, 25), "Game Over", guiStyle);
-			GUI.Label (new Rect (10, 25, 100, 25), "Score: " + GameManager.instance.scoreManager.getScore(), guiStyle);
-			GUI.Label (new Rect (10, 75, 100, 25), "Press Space to play", guiStyle);
+			GUI.Label (new Rect (10, 25, 100, 25), "Score: " + GameManager.instance.scoreManager.getScore (), guiStyle);
+			GUI.Label (new Rect (10, 75, 100, 25), "Press Space To Play", guiStyle);
+			GUI.Label (new Rect (10, 100, 300, 25), "Press Escape To Return To The Main Menu", guiStyle);
 		}
 	}
 }
@@ -164,5 +219,6 @@ public class GameManager : MonoBehaviour {
 public enum GameStates {
 	MainMenu,
 	MainGame,
-	GameOver
+	GameOver,
+	PlayerSelect
 }
