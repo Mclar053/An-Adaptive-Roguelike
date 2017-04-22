@@ -5,7 +5,7 @@ public class Enemy_Shooter : Enemy<Enemy_Shooter> {
 
 	protected override void Start (){
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
-		setStats(10,10,0,2,4,7,2);
+		setStats(10,10,0,2,1f,7,2);
 		lastFired = Time.time + 1f;
 		fsm = new StateMachine<Enemy_Shooter> (this);
 		fsm.changeState( new Shooter_ShootPlayer ());
@@ -19,7 +19,7 @@ public class Enemy_Shooter : Enemy<Enemy_Shooter> {
 
 			GameManager.instance.roomScript.createBullet (1, GetComponent<Rigidbody2D> ().position, Vector2.ClampMagnitude(directionVector,1), shotSpeed, dmg, range);
 			lastFired = Time.time;
-			fireDelay = (Vector2.SqrMagnitude (target.position - GetComponent<Rigidbody2D> ().transform.position)/10f)+0.7f;
+			fireDelay = (Vector2.SqrMagnitude (target.position - GetComponent<Rigidbody2D> ().transform.position)/10f) + 0.7f;
 		}
 	}
 }

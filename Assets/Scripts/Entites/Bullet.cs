@@ -30,7 +30,7 @@ public class Bullet : movingObject {
 			}
 		}
 
-		if (other.gameObject.tag != "Player" && other.gameObject.tag != "Gap" && other.gameObject.tag != "Projectile") {
+		if (other.gameObject.tag != "Player" && other.gameObject.tag != "Gap" && other.gameObject.tag != "Projectile" && other.gameObject.tag != "Pickup" && other.gameObject.tag != "NextFloor") {
 			Destroy (this.gameObject);
 		}
 	}

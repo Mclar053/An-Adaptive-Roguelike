@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Health_Pickup : MonoBehaviour {
+public class Health_Pickup : Pickup {
 
-	// Use this for initialization
-	void Start () {
-	
+	override protected void Start () {
+		value = Random.Range (1, 4);
+		base.Start ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	override protected bool pickupAction(GameObject other){
+		if (other.GetComponent<PlayerMovement> ().currentHitpoints < other.GetComponent<PlayerMovement> ().maxHitpoints) {
+			other.GetComponent<PlayerMovement> ().heal (value);
+			return true;
+		}
+		return false;
 	}
 }

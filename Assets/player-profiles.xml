@@ -10,11 +10,23 @@
         <stat id="5" startTime="64.66" endTime="64.67258" firstEnemyTime="0" hitTime="0" damageTaken="0" />
         <stat id="6" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
         <stat id="7" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="8" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="9" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="10" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="11" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="12" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="13" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="14" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="15" startTime="10.45975" endTime="10.51053" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="16" startTime="19.21761" endTime="19.2669" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="17" startTime="0" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="18" startTime="83.91438" endTime="83.96085" firstEnemyTime="0" hitTime="0" damageTaken="0" />
       </room>
       <room id="1">
         <stat id="0" startTime="55.28" endTime="56.56754" firstEnemyTime="55.86" hitTime="0" damageTaken="0" />
         <stat id="1" startTime="41.72" endTime="43.39116" firstEnemyTime="42.66" hitTime="0" damageTaken="0" />
         <stat id="2" startTime="38.12" endTime="44.58059" firstEnemyTime="42.62" hitTime="0" damageTaken="0" />
+        <stat id="3" startTime="2.84" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="10" />
       </room>
       <room id="2">
         <stat id="0" startTime="54.36" endTime="56.72803" firstEnemyTime="56.02" hitTime="0" damageTaken="0" />
@@ -28,16 +40,27 @@
         <stat id="1" startTime="100.62" endTime="102.4407" firstEnemyTime="101.34" hitTime="0" damageTaken="0" />
         <stat id="2" startTime="32.8" endTime="36.41204" firstEnemyTime="35.62" hitTime="0" damageTaken="0" />
         <stat id="3" startTime="58.76" endTime="60.50889" firstEnemyTime="59.52" hitTime="0" damageTaken="0" />
+        <stat id="4" startTime="71.42" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="10" />
+      </room>
+      <room id="4">
+        <stat id="0" startTime="28.86" endTime="37.78547" firstEnemyTime="32.86" hitTime="0" damageTaken="0" />
       </room>
       <room id="5">
         <stat id="0" startTime="73.5" endTime="76.87606" firstEnemyTime="74.66" hitTime="0" damageTaken="0" />
         <stat id="1" startTime="69.7" endTime="75.95149" firstEnemyTime="74.74" hitTime="0" damageTaken="20" />
         <stat id="2" startTime="2.14" endTime="11.67661" firstEnemyTime="9.12" hitTime="0" damageTaken="0" />
         <stat id="3" startTime="14.12" endTime="23.06444" firstEnemyTime="20.44" hitTime="0" damageTaken="2" />
+        <stat id="4" startTime="3.72" endTime="20.39544" firstEnemyTime="13.88" hitTime="0" damageTaken="2" />
+        <stat id="5" startTime="6.42" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="10" />
+        <stat id="6" startTime="45.52" endTime="55.54875" firstEnemyTime="51.84" hitTime="0" damageTaken="0" />
+        <stat id="7" startTime="92.54" endTime="101.8884" firstEnemyTime="98.32" hitTime="0" damageTaken="0" />
+        <stat id="8" startTime="104.82" endTime="126.4149" firstEnemyTime="110.14" hitTime="0" damageTaken="2" />
       </room>
       <room id="6">
         <stat id="0" startTime="90.24" endTime="91.83293" firstEnemyTime="91.14" hitTime="0" damageTaken="0" />
         <stat id="1" startTime="93.28" endTime="96.14057" firstEnemyTime="94.02" hitTime="0" damageTaken="0" />
+        <stat id="2" startTime="1.64" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="12" />
+        <stat id="3" startTime="65.7" endTime="82.92143" firstEnemyTime="70.12" hitTime="0" damageTaken="0" />
       </room>
       <room id="7">
         <stat id="0" startTime="99.66" endTime="103.3468" firstEnemyTime="101.28" hitTime="0" damageTaken="0" />
@@ -46,11 +69,16 @@
         <stat id="0" startTime="12.62" endTime="26.14365" firstEnemyTime="17.44" hitTime="0" damageTaken="0" />
         <stat id="1" startTime="90.38" endTime="92.32471" firstEnemyTime="91" hitTime="0" damageTaken="0" />
         <stat id="2" startTime="25.74" endTime="42.77623" firstEnemyTime="29.74" hitTime="0" damageTaken="0" />
+        <stat id="3" startTime="28.28" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="10" />
+        <stat id="4" startTime="207.92" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="2" />
+        <stat id="5" startTime="14.3" endTime="26.97466" firstEnemyTime="19.64" hitTime="0" damageTaken="0" />
       </room>
       <room id="9">
         <stat id="0" startTime="30.22" endTime="31.77039" firstEnemyTime="31.14" hitTime="0" damageTaken="0" />
         <stat id="1" startTime="82.93999" endTime="86.96487" firstEnemyTime="84.14" hitTime="0" damageTaken="0" />
         <stat id="2" startTime="12.98" endTime="23.40546" firstEnemyTime="17.04" hitTime="0" damageTaken="2" />
+        <stat id="3" startTime="23.1" endTime="37.26784" firstEnemyTime="26" hitTime="0" damageTaken="6" />
+        <stat id="4" startTime="87.52" endTime="101.3089" firstEnemyTime="90.1" hitTime="0" damageTaken="2" />
       </room>
       <room id="10">
         <stat id="0" startTime="61.6" endTime="63.3073" firstEnemyTime="62.26" hitTime="0" damageTaken="0" />
@@ -61,17 +89,27 @@
         <stat id="1" startTime="98.25999" endTime="99.27042" firstEnemyTime="99.25999" hitTime="0" damageTaken="0" />
         <stat id="2" startTime="40.3" endTime="41.14563" firstEnemyTime="41.14" hitTime="0" damageTaken="0" />
       </room>
+      <room id="12">
+        <stat id="0" startTime="103.44" endTime="112.6753" firstEnemyTime="105.78" hitTime="0" damageTaken="0" />
+        <stat id="1" startTime="180.64" endTime="192.714" firstEnemyTime="182.88" hitTime="0" damageTaken="0" />
+      </room>
       <room id="13">
         <stat id="0" startTime="107.56" endTime="108.1926" firstEnemyTime="108.18" hitTime="0" damageTaken="0" />
+        <stat id="1" startTime="14.88" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="10" />
       </room>
       <room id="14">
         <stat id="0" startTime="24.22" endTime="28.67245" firstEnemyTime="28.66" hitTime="0" damageTaken="2" />
+        <stat id="1" startTime="164.72" endTime="169.1333" firstEnemyTime="169.12" hitTime="0" damageTaken="0" />
+        <stat id="2" startTime="2.84" endTime="8.508297" firstEnemyTime="8.5" hitTime="0" damageTaken="0" />
       </room>
       <room id="16">
         <stat id="0" startTime="66.58" endTime="69.59623" firstEnemyTime="67.46" hitTime="0" damageTaken="0" />
+        <stat id="1" startTime="2.56" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="10" />
+        <stat id="2" startTime="6.96" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="10" />
       </room>
       <room id="17">
         <stat id="0" startTime="67.26" endTime="82.4272" firstEnemyTime="75.84" hitTime="0" damageTaken="0" />
+        <stat id="1" startTime="4.22" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="12" />
       </room>
       <room id="18">
         <stat id="0" startTime="97.04" endTime="98.09386" firstEnemyTime="97.82" hitTime="0" damageTaken="0" />
@@ -91,6 +129,7 @@
       </room>
       <room id="22">
         <stat id="0" startTime="22.24" endTime="24.20416" firstEnemyTime="22.96" hitTime="0" damageTaken="0" />
+        <stat id="1" startTime="47.18" endTime="67.12292" firstEnemyTime="49.44" hitTime="0" damageTaken="2" />
       </room>
       <room id="23">
         <stat id="0" startTime="87.5" endTime="89.57672" firstEnemyTime="87.96" hitTime="0" damageTaken="0" />
@@ -98,6 +137,7 @@
         <stat id="2" startTime="99.64" endTime="114.5011" firstEnemyTime="108.24" hitTime="0" damageTaken="2" />
         <stat id="3" startTime="198.18" endTime="212.8634" firstEnemyTime="206.84" hitTime="0" damageTaken="2" />
         <stat id="4" startTime="44.34" endTime="58.20926" firstEnemyTime="49.92" hitTime="0" damageTaken="2" />
+        <stat id="5" startTime="116.46" endTime="127.7066" firstEnemyTime="123.3" hitTime="0" damageTaken="2" />
       </room>
       <room id="24">
         <stat id="0" startTime="176.48" endTime="186.9096" firstEnemyTime="178.96" hitTime="0" damageTaken="0" />
@@ -105,6 +145,8 @@
       <room id="25">
         <stat id="0" startTime="39.54" endTime="39.54737" firstEnemyTime="0" hitTime="0" damageTaken="0" />
         <stat id="1" startTime="66.64" endTime="66.64262" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="2" startTime="3.02" endTime="3.020605" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="3" startTime="42.94" endTime="42.95249" firstEnemyTime="0" hitTime="0" damageTaken="0" />
       </room>
     </roomStats>
   </player>

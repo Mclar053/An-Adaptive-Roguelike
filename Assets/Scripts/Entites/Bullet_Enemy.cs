@@ -11,12 +11,9 @@ public class Bullet_Enemy : Bullet {
 	override protected void OnTriggerEnter2D(Collider2D other){
 		if(other.gameObject.tag == "Player"){
 			other.gameObject.GetComponent<movingObject> ().damage(dmg);
-			if(other.gameObject.GetComponent<movingObject>().checkDead()){
-				Debug.Log ("Bullet DEAD");
-			}
 		}
 
-		if (other.gameObject.tag != "Enemy" && other.gameObject.tag != "Gap" && other.gameObject.tag != "Projectile") {
+		if (other.gameObject.tag != "Enemy" && other.gameObject.tag != "Gap" && other.gameObject.tag != "Projectile" && other.gameObject.tag != "Pickup" && other.gameObject.tag != "NextFloor") {
 			Destroy (this.gameObject);
 		}
 	}

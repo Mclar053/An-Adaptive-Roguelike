@@ -31,7 +31,7 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 			XmlNodeList entities = roomsList[i].ChildNodes[1].ChildNodes;
 			Room newRoom = new Room (15,9,entities.Count);
 
-			Debug.Log (rows.Count+" "+roomsList.Count);
+			//Debug.Log (rows.Count+" "+roomsList.Count);
 
 			//Room Layout
 			for (int j=0; j<rows.Count; j++){ // levels itens nodes.
@@ -42,9 +42,9 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 			}
 
 			//Entity Positions
-			Debug.Log(entities.Count);
+			//Debug.Log(entities.Count);
 			for(int j=0; j<entities.Count; j++){
-				Debug.Log (entities[j].Attributes["column"].Value);
+				//Debug.Log (entities[j].Attributes["column"].Value);
 				newRoom.setEntity (j, int.Parse(entities[j].Attributes["column"].Value), int.Parse(entities[j].Attributes["row"].Value), int.Parse(entities[j].Attributes["type"].Value));
 			}
 
@@ -111,7 +111,7 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 					newPlayer.createInstance (instance);
 				}
 			}
-			newPlayer.printStats ();
+			//newPlayer.printStats ();
 			playerProfiles.Add (newPlayer);
 		}
 	}

@@ -26,18 +26,12 @@ public class Enemy<A> : movingObject {
 	protected void damagePlayerTrigger(Collider2D other){
 		if(other.gameObject.tag == "Player"){
 			other.gameObject.GetComponent<movingObject> ().damage(dmg);
-			if(other.gameObject.GetComponent<movingObject>().checkDead()){
-				Debug.Log ("DEAD!");
-			}
 		}
 	}
 
 	protected void damagePlayerCollision(Collision2D other){
 		if(other.gameObject.tag == "Player"){
 			other.gameObject.GetComponent<movingObject> ().damage(dmg);
-			if(other.gameObject.GetComponent<movingObject>().checkDead()){
-				Debug.Log ("DEAD!");
-			}
 		}
 	}
 

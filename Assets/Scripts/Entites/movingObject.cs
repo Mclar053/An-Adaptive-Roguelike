@@ -52,7 +52,17 @@ public abstract class movingObject : MonoBehaviour {
 			lastHit = Time.time;
 			if (gameObject.tag == "Player") {
 				GameManager.instance.statistics.playerDamaged (GameManager.instance.roomScript.currentRoom,_dmg);
+				if (checkDead ()) {
+					GameManager.instance.changeState(GameStates.GameOver);
+				}
 			}
+		}
+	}
+
+	public void heal(float _hp){
+		currentHitpoints += _hp;
+		if (currentHitpoints > maxHitpoints) {
+			currentHitpoints = maxHitpoints;
 		}
 	}
 

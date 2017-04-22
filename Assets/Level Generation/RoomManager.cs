@@ -19,6 +19,11 @@ public class RoomManager : MonoBehaviour {
 	public GameObject gapTile;
 	public GameObject[] enemy;
 	public GameObject[] bullet;
+	public GameObject player;
+
+	public GameObject score;
+	public GameObject health;
+	public GameObject[] upgrades;
 
 	//Current Level
 	private mTree levelTree;
@@ -26,10 +31,13 @@ public class RoomManager : MonoBehaviour {
 	//List of room objects
 	//private List<Room> rooms = new List<Room>(); //Holds each room for each index
 	private Transform[] roomHolder = new Transform[0];
+	private Transform playerTransform;
 	public int currentRoom; //Current room selected
 	public Vector2 currentGridPosition = new Vector2(0,0);
+	private int currentLevel;
 
 	void createLevel(int _level){
+		currentLevel = _level;
 		destroyLevel ();
 
 		levelTree = new mTree (_level);
@@ -110,9 +118,11 @@ public class RoomManager : MonoBehaviour {
 		}
 	}
 
-	void destroyLevel(){
+	public void destroyLevel(){
 		foreach(Transform _t in roomHolder){
-			Destroy (_t.gameObject);
+			if (_t != null) {
+				Destroy (_t.gameObject);
+			}
 		}
 	}
 
@@ -168,6 +178,16 @@ public class RoomManager : MonoBehaviour {
 				instance.transform.SetParent (roomHolder[_room]);
 			}
 		}
+	}
+
+	public void createPlayer(){
+		playerTransform = new GameObject ("PlayerTransform").transform;
+		GameObject instance = Instantiate (player, new Vector3 (7, 4, 0), Quaternion.identity) as GameObject;
+		instance.transform.SetParent (playerTransform);
+	}
+
+	public void destroyPlayer(){
+		Destroy (playerTransform.gameObject);
 	}
 
 	void addEnemies(int _room, int[,] _entities){
@@ -237,6 +257,22 @@ public class RoomManager : MonoBehaviour {
 			_door.GetComponent<Collider2D> ().isTrigger = true;
 			_door.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f);
 		}
+	}
+
+	public void createPickup(){
+		GameObject toInstantiate;
+		float chance = Random.Range (0, 100);
+
+		toInstantiate = health;
+		toInstantiate.GetComponent<Pickup> ().setValue (Random.Range (1,3));
+
+		if (chance > 30f) {
+			toInstantiate = score;
+			toInstantiate.GetComponent<Pickup> ().setValue (Random.Range (currentLevel, currentLevel + currentRoom));
+		}
+
+		GameObject instance = Instantiate (toInstantiate, new Vector3 (7, 4, 0f), Quaternion.identity) as GameObject;
+		instance.transform.SetParent (roomHolder[currentRoom]);
 	}
 
 	public void SetupLevel(int _level){

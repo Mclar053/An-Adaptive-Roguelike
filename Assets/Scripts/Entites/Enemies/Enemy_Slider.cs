@@ -16,9 +16,6 @@ public class Enemy_Slider : Enemy<Enemy_Slider> {
 	override protected void OnCollisionStay2D(Collision2D other){
 		if(other.gameObject.tag == "Player"){
 			other.gameObject.GetComponent<movingObject> ().damage(dmg);
-			if(other.gameObject.GetComponent<movingObject>().checkDead()){
-				Debug.Log ("DEAD!");
-			}
 		}
 		if (other.gameObject.tag == "Player" || other.gameObject.tag == "Wall" || other.gameObject.tag == "Gap" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "DoorLeft" || other.gameObject.tag == "DoorRight" || other.gameObject.tag == "DoorTop" || other.gameObject.tag == "DoorBottom") {
 			changeDirection ();

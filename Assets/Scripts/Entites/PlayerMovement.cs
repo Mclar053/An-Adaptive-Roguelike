@@ -7,20 +7,11 @@ using System.Collections;
 
 public class PlayerMovement : movingObject {
 
-	int score;
+	float score;
 
 	override protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
-		maxHitpoints = 20;
-		currentHitpoints = maxHitpoints;
-		speed = 35;
-		hitDelay = 0.5f;
-		dmg = 3;
-		fireDelay = 0.5f;
-		shotSpeed = 6f;
-		lastHit = 0f;
-		lastFired = 0f;
-		range = 1f;
+		resetPlayer ();
 	}
 
 	override protected void FixedUpdate () {
@@ -93,5 +84,27 @@ public class PlayerMovement : movingObject {
 		if (other.tag == "NextFloor") {
 			GameManager.instance.nextLevel ();
 		}
+	}
+
+	public void resetPlayer(){
+		maxHitpoints = 10;
+		currentHitpoints = maxHitpoints;
+		speed = 35;
+		hitDelay = 0.5f;
+		dmg = 3;
+		fireDelay = 0.5f;
+		shotSpeed = 6f;
+		lastHit = 0f;
+		lastFired = 0f;
+		range = 1f;
+		GetComponent<Rigidbody2D> ().position = new Vector2 (7, 4);
+	}
+
+	public float getScore(){
+		return score;
+	}
+
+	public void addScore(float _score){
+		score += _score;
 	}
 }
