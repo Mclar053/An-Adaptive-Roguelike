@@ -12,6 +12,12 @@ public class Room {
 	public Room(int _w, int _h, int _entityNum){
 		layout = new int[_w,_h];
 		entities = new int[_entityNum,3];
+		baseScoreChange = 0.07f;
+	}
+
+	public void addBaseModifierValues(float _promote, float _demote){
+		basePromote = _promote;
+		baseDemote = _demote;
 	}
 
 	public void setEntity(int _pos, int _x, int _y, int _id){
@@ -21,9 +27,9 @@ public class Room {
 	}
 
 	public int checkRoomModifier(float _roomScore, int currentRoomMod){
-		if (_roomScore < basePromote - Mathf.Pow(baseScoreChange * currentRoomMod - 1,3)) {
+		if (_roomScore < basePromote / (baseScoreChange * currentRoomMod + 0.5f)) {
 			return 1;
-		} else if (_roomScore > baseDemote + Mathf.Pow(baseScoreChange * currentRoomMod - 1,3) && currentRoomMod > -5) {
+		} else if (_roomScore > baseDemote / (baseScoreChange * currentRoomMod + 0.5f) && currentRoomMod > -5) {
 			return -1;
 		}
 		return 0;

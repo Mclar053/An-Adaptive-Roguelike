@@ -79,7 +79,7 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 					 * <stat/>
 					 * </roomMod>
 					 */
-					List<RoomStats> currentPlayedRoomStats = playerProfiles [i].getRoomInstances (j);
+					List<RoomStats> currentPlayedRoomStats = playerProfiles [i].getRoomModInstances (j);
 					for (int k = 0; k < currentPlayedRoomStats.Count; k++) {
 						xmlToSave += "<stat id='" + k + "' startTime='" + currentPlayedRoomStats [k].startTime + "' endTime='" + currentPlayedRoomStats [k].endTime + "' firstEnemyTime='" + currentPlayedRoomStats [k].timeToKillFirstEnemy + "' hitTime='" + currentPlayedRoomStats [k].timeToGetHit + "' damageTaken='" + currentPlayedRoomStats [k].damageTakenInRoom + "'/>";
 					}
