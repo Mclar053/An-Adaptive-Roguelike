@@ -4,13 +4,14 @@ using System.Collections.Generic;
 
 public class PlayerStats {
 
+	//Store current mod for each room
+
 	public int userID = 0;
-	Dictionary<int,List<RoomStats>> roomStats = new Dictionary<int, List<RoomStats>> ();
+	Dictionary<int,Dictionary<int,List<RoomStats>>> roomStats = new Dictionary<int, Dictionary<int, List<RoomStats>>> ();
+	Dictionary<int, int> roomModifiers = new Dictionary<int,int>(); //Contains all the current room modifiers for the player 
 	RoomStats[] currentFloor;
 
-	public PlayerStats(){
-
-	}
+	public PlayerStats(){}
 
 	public void resetPlayerStats(){
 	}
@@ -41,13 +42,36 @@ public class PlayerStats {
 		}
 	}
 
-	public void copyRoomStats(PlayerStats _player){
-		for(int i=0; i<GameManager.instance.roomData.getTotalNumberOfRooms(); i++){
-			this.setRoomInstances (i, _player.getRoomInstances (i));
+	public void setRoomModifier(int _roomID, int _modID = 0){
+		if (_modID != null) {
+			if (!roomModifiers.ContainsKey (_roomID)) {
+				roomModifiers.Add (_roomID, _modID);
+			} else {
+				roomModifiers [_roomID] = _modID;
+			}
 		}
 	}
 
-	public void setRoomInstances(int _roomIndex, List<RoomStats> _stats){
+	public int getRoomModifer(int _roomID){
+		if(!roomModifiers.ContainsKey(_roomID)){
+			return null;
+		}
+		return roomModifiers [_roomID];
+	}
+
+	/*
+	 * Change to incorporate the room modifiers
+	 * 
+	 * 
+	 */
+	public void copyRoomStats(PlayerStats _player){
+		for(int i=0; i<GameManager.instance.roomData.getTotalNumberOfRooms(); i++){
+			this.setRoomInstances (i, _player.getRoomInstances (i));
+			this.setRoomModifier (i, _player.getRoomModifer (i));
+		}
+	}
+
+	public void setRoomInstances(int _roomIndex, Dictionary<int, List<RoomStats>> _stats){
 		if (_stats != null) {
 			if (!roomStats.ContainsKey (_roomIndex)) {
 				roomStats.Add (_roomIndex, _stats);
@@ -65,16 +89,48 @@ public class PlayerStats {
 	 * ----
 	 * @Method: Selects a room and returns all the instances of that room
 	 */
-	public List<RoomStats> getRoomInstances(int _roomIndex){
+	public Dictionary<int, List<RoomStats>> getRoomInstances(int _roomIndex){
 		if(!roomStats.ContainsKey(_roomIndex)){
 			return null;
 		}
 		return roomStats [_roomIndex];
 	}
 
-	public bool roomTypePlayed(int _roomID){
-		if(roomStats.ContainsKey(_roomID)){
-			return true;
+	//UPDATE THE COMMENT
+	public void setRoomModInstances(int _roomIndex, int _modID, List<RoomStats> _stats){
+		if (_stats != null) {
+			if (!roomStats[_roomIndex].ContainsKey (_modID)) {
+				roomStats[_roomIndex].Add (_modID, _stats);
+			} else {
+				roomStats [_roomIndex][_modID] = _stats;
+			}
+		}
+	}
+
+	/*@Input:
+	 * //UPDATE!!!
+	 * int _roomIndex -> the index of the room that has been selected
+	 * ----
+	 * @Output:
+	 * List<RoomStats> -> the list of RoomStats objects that have been created for the room selected
+	 * ----
+	 * @Method: Selects a room and returns all the instances of that room
+	 */
+	public List<RoomStats> getRoomModInstances(int _roomIndex, int _modID){
+		if(!roomStats.ContainsKey(_roomIndex)){
+			return null;
+		}
+		else if(!roomStats[_roomIndex].ContainsKey(_modID)){
+			return null;
+		}
+		return roomStats [_roomIndex][_modID];
+	}
+
+	public bool roomTypePlayed(int _roomID, int _modID = 0){
+		if (roomStats.ContainsKey (_roomID)) {
+			if (roomStats [_roomID].ContainsKey (_modID)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -83,23 +139,42 @@ public class PlayerStats {
 		if (currentFloor [_roomIndex] == null) {
 			currentFloor [_roomIndex] = new RoomStats ();
 			currentFloor [_roomIndex].roomID = _roomID;
+			currentFloor [_roomIndex].modID = roomModifiers[_roomID];
 		}
 	}
 
 	/*@Input
-	 * int _roomIndex -> the index of the room that has been selected
+	 * RoomStats _roomIndex -> the RoomStats object which has been selected to be added
 	 * ----
 	 * @Output 
 	 * int -> the index of the instance that has just been created
 	 * ----
+	 * //UPDATE
 	 * @Method: Create a new instance of a room to gather stats of how the player has performed
 	 */
 	public int createInstance(RoomStats _room){
 		if (!roomStats.ContainsKey (_room.roomID)) {
-			roomStats.Add (_room.roomID, new List<RoomStats>());
+			roomStats.Add (_room.roomID, new Dictionary<int, List<RoomStats>>());
 		}
-		roomStats [_room.roomID].Add (new RoomStats(_room));
+		createModInstance (_room);
 		return roomStats [_room.roomID].Count - 1;
+	}
+		
+	/*@Input
+	 * RoomStats _roomIndex -> the index of the room that has been selected
+	 * ----
+	 * @Output 
+	 * int -> the index of the instance that has just been created
+	 * ----
+	 * //UPDATE
+	 * @Method: Create a new instance of a room to gather stats of how the player has performed
+	 */
+	public int createModInstance(RoomStats _room){
+		if (!roomStats[_room.roomID].ContainsKey (_room.modID)) {
+			roomStats[_room.roomID].Add (_room.modID, new List<RoomStats>());
+		}
+		roomStats [_room.roomID][_room.modID].Add (new RoomStats(_room));
+		return roomStats [_room.roomID][_room.modID].Count - 1;
 	}
 
 	/*@Input
@@ -156,14 +231,18 @@ public class PlayerStats {
 		return false;
 	}
 
-	public float getRoomAvergePerformance(int _roomIndex){
+	public float getRoomAvergePerformance(int _roomID){
 		float totalScore = 0;
-		if (!roomStats.ContainsKey (_roomIndex)) { //Room doesn't exist
+		if (!roomStats.ContainsKey (_roomID)) { //Room doesn't exist
 			totalScore = -2;
-		} else if(roomStats[_roomIndex].Count < 3){ //Room doesn't have enough data
+		}
+		else if(!roomStats[_roomID].ContainsKey (roomModifiers[_roomID])){ //The mod of the room selected doesn't exist
+			totalScore = -3;
+		}
+		else if(roomStats[_roomID][roomModifiers[_roomID]].Count < 5){ //Room mod doesn't have enough data
 			totalScore = -1;
-		} else { //Room has enough data and exists
-			List<RoomStats> selectedRoom = roomStats [_roomIndex];
+		} else { //Room mod has enough data and exists
+			List<RoomStats> selectedRoom = roomStats [_roomID][roomModifiers[_roomID]];
 			for(int i=0; i<selectedRoom.Count; i++){ //Calculate score for each room
 				totalScore+=selectedRoom[i].performanceScore() * (-0.01f * Mathf.Pow(i,2) + 1);
 			}
@@ -175,9 +254,11 @@ public class PlayerStats {
 
 	public void printStats(){
 		Debug.Log ("-------ALL ROOM STATISTICS-------");
-		foreach (KeyValuePair<int, List<RoomStats>> _key in roomStats) {
-			for (int i = 0; i < _key.Value.Count; i++) {
-				Debug.Log (System.String.Format("{0}:{1} StartTime:{2} EndTime:{3} EnemyKilled:{4} PlayerDamaged:{5}",_key.Key, i, _key.Value[i].startTime,_key.Value[i].endTime,_key.Value[i].timeToKillFirstEnemy,_key.Value[i].damageTakenInRoom));
+		foreach (KeyValuePair<int, Dictionary<int,List<RoomStats>>> _room in roomStats) {
+			foreach (KeyValuePair<int, List<RoomStats>> _key in _room) {
+				for (int i = 0; i < _key.Value.Count; i++) {
+					Debug.Log (System.String.Format ("Room:{0} Mod:{1} statID:{2} StartTime:{3} EndTime:{4} EnemyKilled:{5} PlayerDamaged:{6}",_room.Key, _key.Key, i, _key.Value [i].startTime, _key.Value [i].endTime, _key.Value [i].timeToKillFirstEnemy, _key.Value [i].damageTakenInRoom));
+				}
 			}
 		}
 	}

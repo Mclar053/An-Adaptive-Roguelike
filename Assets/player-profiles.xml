@@ -401,4 +401,24 @@
       </room>
     </roomStats>
   </player>
+  <player id="2">
+    <roomStats>
+      <room id="0">
+        <stat id="0" startTime="1.64928" endTime="1.730786" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+        <stat id="1" startTime="22.13131" endTime="22.17954" firstEnemyTime="0" hitTime="0" damageTaken="0" />
+      </room>
+      <room id="6">
+        <stat id="0" startTime="58.7" endTime="0" firstEnemyTime="0" hitTime="0" damageTaken="4" />
+      </room>
+      <room id="7">
+        <stat id="0" startTime="3.54" endTime="0" firstEnemyTime="12.6" hitTime="0" damageTaken="10" />
+      </room>
+      <room id="9">
+        <stat id="0" startTime="43.22" endTime="56.84399" firstEnemyTime="46.54" hitTime="0" damageTaken="6" />
+      </room>
+      <room id="20">
+        <stat id="0" startTime="24.7" endTime="41.28066" firstEnemyTime="32.36" hitTime="0" damageTaken="0" />
+      </room>
+    </roomStats>
+  </player>
 </AllPlayers>

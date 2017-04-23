@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class RoomStats {
 
 	public int roomID;
+	public int modID;
 
 	//Stats
 	public float startTime;

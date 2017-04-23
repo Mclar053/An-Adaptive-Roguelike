@@ -31,6 +31,8 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 			XmlNodeList entities = roomsList[i].ChildNodes[1].ChildNodes;
 			Room newRoom = new Room (15,9,entities.Count);
 
+			//Load attributes that contain base promote and demote values
+
 			//Debug.Log (rows.Count+" "+roomsList.Count);
 
 			//Room Layout
@@ -71,7 +73,12 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 			for (int j = 0; j < rooms.Count + bossRooms.Count + specialRooms.Count; j++) {
 				if (playerProfiles [i].roomTypePlayed (j)) {
 					xmlToSave += "<room id='" + j + "'>";
-						
+					/* 
+					 * Another loop for the roomMods
+					 * <roomMod id="0">
+					 * <stat/>
+					 * </roomMod>
+					 */
 					List<RoomStats> currentPlayedRoomStats = playerProfiles [i].getRoomInstances (j);
 					for (int k = 0; k < currentPlayedRoomStats.Count; k++) {
 						xmlToSave += "<stat id='" + k + "' startTime='" + currentPlayedRoomStats [k].startTime + "' endTime='" + currentPlayedRoomStats [k].endTime + "' firstEnemyTime='" + currentPlayedRoomStats [k].timeToKillFirstEnemy + "' hitTime='" + currentPlayedRoomStats [k].timeToGetHit + "' damageTaken='" + currentPlayedRoomStats [k].damageTakenInRoom + "'/>";
@@ -98,6 +105,10 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 			XmlNodeList playerRooms = players [i].ChildNodes[0].ChildNodes;
 			for(int j=0; j<playerRooms.Count; j++){
 				XmlNodeList roomInstances = playerRooms [j].ChildNodes;
+
+				/*
+				 * For loop here for
+				 */
 
 				for(int k=0; k<roomInstances.Count; k++){
 					RoomStats instance = new RoomStats ();
