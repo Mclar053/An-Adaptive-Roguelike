@@ -20,6 +20,7 @@ public class RoomManager : MonoBehaviour {
 	public GameObject[] enemy;
 	public GameObject[] bullet;
 	public GameObject player;
+	public GameObject healthBar;
 
 	public GameObject score;
 	public GameObject health;
@@ -32,6 +33,7 @@ public class RoomManager : MonoBehaviour {
 	//private List<Room> rooms = new List<Room>(); //Holds each room for each index
 	private Transform[] roomHolder = new Transform[0];
 	private Transform playerTransform;
+	private Transform healthBarTransform;
 	public int currentRoom; //Current room selected
 	public Vector2 currentGridPosition = new Vector2(0,0);
 	private int currentLevel;

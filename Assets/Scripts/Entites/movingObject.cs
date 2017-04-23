@@ -53,6 +53,8 @@ public abstract class movingObject : MonoBehaviour {
 			lastHit = Time.time;
 			if (gameObject.tag == "Player") {
 				GameManager.instance.statistics.playerDamaged (GameManager.instance.roomScript.currentRoom,_dmg);
+				GameObject.FindGameObjectWithTag ("HealthBar").transform.localScale = new Vector2 (currentHitpoints/maxHitpoints,1);
+				GameObject.FindGameObjectWithTag ("HealthBar").transform.localPosition = new Vector2 (-1*((1-currentHitpoints/maxHitpoints)/2),0);
 				if (checkDead ()) {
 					GameManager.instance.changeState(GameStates.GameOver);
 				}
@@ -65,6 +67,8 @@ public abstract class movingObject : MonoBehaviour {
 		if (currentHitpoints > maxHitpoints) {
 			currentHitpoints = maxHitpoints;
 		}
+		GameObject.FindGameObjectWithTag ("HealthBar").transform.localScale = new Vector2 (currentHitpoints/maxHitpoints,1);
+		GameObject.FindGameObjectWithTag ("HealthBar").transform.localPosition = new Vector2 (-1*((1-currentHitpoints/maxHitpoints)/2),0);
 	}
 
 	virtual public bool checkDead(){
