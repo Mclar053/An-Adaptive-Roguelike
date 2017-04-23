@@ -150,6 +150,7 @@ public class GameManager : MonoBehaviour {
 					playerSelectErrorMessage = "";
 					break;
 				case GameStates.MainGame:
+					GameManager.instance.level = 1;
 					scoreManager.resetScore ();
 					roomScript.createPlayer ();
 					InitGame ();

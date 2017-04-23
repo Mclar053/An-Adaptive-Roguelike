@@ -4,9 +4,11 @@ using System.Collections;
 public class Enemy_Slider : Enemy<Enemy_Slider> {
 	
 	public Vector2 direction;
+	public float lastChange;
 
 	// Use this for initialization
 	override protected void Start () {
+		lastChange = 0;
 		setStats (22, 20, 0, 2, 20, 0, 0);
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		fsm = new StateMachine<Enemy_Slider> (this);
@@ -18,7 +20,7 @@ public class Enemy_Slider : Enemy<Enemy_Slider> {
 		if(other.gameObject.tag == "Player"){
 			other.gameObject.GetComponent<movingObject> ().damage(dmg);
 		}
-		if (other.gameObject.tag == "Player" || other.gameObject.tag == "Wall" || other.gameObject.tag == "Gap" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "DoorLeft" || other.gameObject.tag == "DoorRight" || other.gameObject.tag == "DoorTop" || other.gameObject.tag == "DoorBottom") {
+		if ((other.gameObject.tag == "Player" || other.gameObject.tag == "Wall" || other.gameObject.tag == "Gap" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "DoorLeft" || other.gameObject.tag == "DoorRight" || other.gameObject.tag == "DoorTop" || other.gameObject.tag == "DoorBottom") && Time.time > lastChange + 1) {
 			changeDirection ();
 		}
 	}
@@ -39,6 +41,7 @@ public class Enemy_Slider : Enemy<Enemy_Slider> {
 		} else if(direction.x == -1 && direction.y == 0){
 			direction = new Vector2 (0,-1);
 		}
+		lastChange = Time.time;
 		transform.Rotate (0,0,90);
 	}
 }
