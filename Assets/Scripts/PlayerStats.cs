@@ -165,7 +165,7 @@ public class PlayerStats {
 		} else { //Room has enough data and exists
 			List<RoomStats> selectedRoom = roomStats [_roomIndex];
 			for(int i=0; i<selectedRoom.Count; i++){ //Calculate score for each room
-				totalScore+=selectedRoom[i].performanceScore() * (-0.01 * Mathf.Pow(i,2) + 1);
+				totalScore+=selectedRoom[i].performanceScore() * (-0.01f * Mathf.Pow(i,2) + 1);
 			}
 			totalScore /= selectedRoom.Count;
 		}
