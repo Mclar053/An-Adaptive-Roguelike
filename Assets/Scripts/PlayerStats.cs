@@ -156,6 +156,23 @@ public class PlayerStats {
 		return false;
 	}
 
+	public float getRoomAvergePerformance(int _roomIndex){
+		float totalScore = 0;
+		if (!roomStats.ContainsKey (_roomIndex)) { //Room doesn't exist
+			totalScore = -2;
+		} else if(roomStats[_roomIndex].Count < 3){ //Room doesn't have enough data
+			totalScore = -1;
+		} else { //Room has enough data and exists
+			List<RoomStats> selectedRoom = roomStats [_roomIndex];
+			for(int i=0; i<selectedRoom.Count; i++){ //Calculate score for each room
+				totalScore+=selectedRoom[i].performanceScore() * (-0.01 * Mathf.Pow(i,2) + 1);
+			}
+			totalScore /= selectedRoom.Count;
+		}
+
+		return totalScore;
+	}
+
 	public void printStats(){
 		Debug.Log ("-------ALL ROOM STATISTICS-------");
 		foreach (KeyValuePair<int, List<RoomStats>> _key in roomStats) {
