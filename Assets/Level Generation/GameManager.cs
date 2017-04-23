@@ -199,6 +199,8 @@ public class GameManager : MonoBehaviour {
 				GUI.Label (new Rect (10, 150, 100, 25), "Shot Speed: " + GameObject.FindGameObjectWithTag ("Player").GetComponent<movingObject> ().shotSpeed, guiStyle);
 				GUI.Label (new Rect (10, 175, 100, 25), "Damage: " + GameObject.FindGameObjectWithTag ("Player").GetComponent<movingObject> ().dmg, guiStyle);
 				GUI.Label (new Rect (10, 225, 100, 25), "Player ID: " + GameManager.instance.statistics.userID, guiStyle);
+				GUI.Label (new Rect (10, 250, 100, 25), "CurrentMod: " + GameManager.instance.statistics.getRoomModifer(roomScript.getLevelNodeRoomID(roomScript.currentRoom)), guiStyle);
+				GUI.Label (new Rect (10, 275, 100, 25), "Room ID: " + roomScript.getLevelNodeRoomID(roomScript.currentRoom), guiStyle);
 			}
 		} else if (GameManager.instance.CurrentState () == GameStates.GameOver) {
 			GUI.Label (new Rect (10, 0, 100, 25), "Game Over", guiStyle);

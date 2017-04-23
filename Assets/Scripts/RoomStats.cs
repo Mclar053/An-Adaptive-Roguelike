@@ -53,6 +53,9 @@ public class RoomStats {
 	}
 
 	public float timeToCompleteRoom(){
+		if (endTime == 0 && startTime > 0) {
+			return 9999999;
+		}
 		return endTime - startTime;
 	}
 

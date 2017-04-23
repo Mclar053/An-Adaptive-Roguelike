@@ -100,8 +100,8 @@ public class RoomManager : MonoBehaviour {
 			//Debug.Log (i+" TYPE: "+ currentNode.getRoomType()+" ID: "+currentNode.getRoomID());
 
 			if (currentNode.getRoomType () == 1) {
-				roomLayout = GameManager.instance.roomData.getBossRoomLayout (currentNode.getRoomID ());
-				roomEntities = GameManager.instance.roomData.getBossRoomEntities (currentNode.getRoomID ());
+				roomLayout = GameManager.instance.roomData.getBossRoomLayout (currentNode.getRoomID ()-GameManager.instance.numberOfRooms);
+				roomEntities = GameManager.instance.roomData.getBossRoomEntities (currentNode.getRoomID ()-GameManager.instance.numberOfRooms);
 			} else if (currentNode.getRoomType () == 2) {
 				roomLayout = GameManager.instance.roomData.getSpecialRoomLayout (currentNode.getRoomID ());
 				roomEntities = GameManager.instance.roomData.getSpecialRoomEntities (currentNode.getRoomID ());
@@ -109,12 +109,21 @@ public class RoomManager : MonoBehaviour {
 				roomLayout = GameManager.instance.roomData.getRoomLayout (currentNode.getRoomID ());
 				roomEntities = GameManager.instance.roomData.getRoomEntities (currentNode.getRoomID ());
 			}
+				
+				float performanceScore = GameManager.instance.statistics.getRoomAvergePerformance (currentNode.getRoomID ());
+				int currentMod = GameManager.instance.statistics.getRoomModifer (currentNode.getRoomID ());
+			if (currentNode.getRoomID () != 0) {
+				if (performanceScore >= 0) {
+					currentMod += GameManager.instance.roomData.checkRoomModifier (currentNode.getRoomID (), performanceScore, currentMod);
+					GameManager.instance.statistics.setRoomModifier (currentNode.getRoomID (), currentMod);
+				}
+			}
 
 			//Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doors[0],doors[1],doors[2],doors[3]));
 			roomHolder[i] = new GameObject ("Room"+i).transform;
 			createRoom (i, doors, roomLayout);
 			if (i != 0) {
-				addEnemies (i, roomEntities); //First room is safe
+				addEnemies (i, roomEntities, currentMod); //First room is safe
 				roomHolder [i].gameObject.SetActive (false);
 			}
 		}
@@ -192,10 +201,13 @@ public class RoomManager : MonoBehaviour {
 		Destroy (playerTransform.gameObject);
 	}
 
-	void addEnemies(int _room, int[,] _entities){
+	void addEnemies(int _room, int[,] _entities, int _mod){
 		for(int i=0; i<_entities.GetLength(0); i++){
 //			Debug.Log (System.String.Format("{0}, {1}, {2}, {3}",i,_entities[i,0],_entities[i,1],_entities[i,2]));
 			GameObject instance = Instantiate (enemy[_entities[i,0]], new Vector3 (_entities[i,1],_entities[i,2], 0f), Quaternion.identity) as GameObject;
+			if (instance.GetComponent<movingObject> () != null) {
+				instance.GetComponent<movingObject> ().changeDifficulty (_mod);
+			}
 			instance.transform.SetParent (roomHolder [_room]);
 		}
 	}

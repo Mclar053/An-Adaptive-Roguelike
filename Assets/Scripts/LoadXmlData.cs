@@ -30,10 +30,8 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 			XmlNodeList rows = roomsList[i].ChildNodes[0].ChildNodes;
 			XmlNodeList entities = roomsList[i].ChildNodes[1].ChildNodes;
 			Room newRoom = new Room (15,9,entities.Count);
-
 			//Load attributes that contain base promote and demote values
-
-			//Debug.Log (rows.Count+" "+roomsList.Count);
+			newRoom.addBaseModifierValues (float.Parse (roomsList [i].Attributes ["promoteValue"].Value), float.Parse (roomsList [i].Attributes ["demoteValue"].Value));
 
 			//Room Layout
 			for (int j=0; j<rows.Count; j++){ // levels itens nodes.
@@ -72,16 +70,15 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 
 			for (int j = 0; j < rooms.Count + bossRooms.Count + specialRooms.Count; j++) {
 				if (playerProfiles [i].roomTypePlayed (j)) {
-					xmlToSave += "<room id='" + j + "'>";
-					/* 
-					 * Another loop for the roomMods
-					 * <roomMod id="0">
-					 * <stat/>
-					 * </roomMod>
-					 */
-					List<RoomStats> currentPlayedRoomStats = playerProfiles [i].getRoomModInstances (j);
-					for (int k = 0; k < currentPlayedRoomStats.Count; k++) {
-						xmlToSave += "<stat id='" + k + "' startTime='" + currentPlayedRoomStats [k].startTime + "' endTime='" + currentPlayedRoomStats [k].endTime + "' firstEnemyTime='" + currentPlayedRoomStats [k].timeToKillFirstEnemy + "' hitTime='" + currentPlayedRoomStats [k].timeToGetHit + "' damageTaken='" + currentPlayedRoomStats [k].damageTakenInRoom + "'/>";
+					xmlToSave += "<room id='" + j + "' currentMod='" + playerProfiles[i].getRoomModifer(i) + "'>";
+					foreach(KeyValuePair<int,List<RoomStats>> _room in playerProfiles [i].getRoomInstances (j)){
+						xmlToSave += "<roomMod id='"+ _room.Key +"'>";
+
+						List<RoomStats> currentPlayedRoomStats = playerProfiles [i].getRoomModInstances (j,_room.Key);
+						for (int k = 0; k < currentPlayedRoomStats.Count; k++) {
+							xmlToSave += "<stat id='" + k + "' startTime='" + currentPlayedRoomStats [k].startTime + "' endTime='" + currentPlayedRoomStats [k].endTime + "' firstEnemyTime='" + currentPlayedRoomStats [k].timeToKillFirstEnemy + "' hitTime='" + currentPlayedRoomStats [k].timeToGetHit + "' damageTaken='" + currentPlayedRoomStats [k].damageTakenInRoom + "'/>";
+						}
+						xmlToSave += "</roomMod>";
 					}
 					xmlToSave += "</room>";
 				}
@@ -103,23 +100,26 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 			newPlayer.userID = int.Parse(players [i].Attributes ["id"].Value);
 
 			XmlNodeList playerRooms = players [i].ChildNodes[0].ChildNodes;
-			for(int j=0; j<playerRooms.Count; j++){
-				XmlNodeList roomInstances = playerRooms [j].ChildNodes;
+			for(int j=0; j<playerRooms.Count; j++){ //Loop through all rooms
+				Debug.Log(j+" "+playerRooms.Count +" "+ int.Parse (playerRooms [j].Attributes ["currentMod"].Value));
+				XmlNodeList roomMods = playerRooms [j].ChildNodes;
+				newPlayer.setRoomModifier (j, int.Parse (playerRooms [j].Attributes ["currentMod"].Value));
 
-				/*
-				 * For loop here for
-				 */
+				for (int l = 0; l < roomMods.Count; l++) { //Loop through all room modifiers
+					XmlNodeList roomInstances = roomMods [l].ChildNodes;
 
-				for(int k=0; k<roomInstances.Count; k++){
-					RoomStats instance = new RoomStats ();
-					instance.roomID = int.Parse(playerRooms[j].Attributes["id"].Value);
-					instance.startTime = float.Parse(roomInstances[k].Attributes["startTime"].Value);
-					instance.endTime = float.Parse(roomInstances[k].Attributes["endTime"].Value);
-					instance.timeToKillFirstEnemy = float.Parse(roomInstances[k].Attributes["firstEnemyTime"].Value);
-					instance.timeToGetHit = float.Parse(roomInstances[k].Attributes["hitTime"].Value);
-					instance.damageTakenInRoom = float.Parse(roomInstances[k].Attributes["damageTaken"].Value);
+					for (int k = 0; k < roomInstances.Count; k++) { //Loop through all stats in room modifiers
+						RoomStats instance = new RoomStats ();
+						instance.roomID = int.Parse (playerRooms [j].Attributes ["id"].Value);
+						instance.modID = int.Parse (roomMods [l].Attributes ["id"].Value);
+						instance.startTime = float.Parse (roomInstances [k].Attributes ["startTime"].Value);
+						instance.endTime = float.Parse (roomInstances [k].Attributes ["endTime"].Value);
+						instance.timeToKillFirstEnemy = float.Parse (roomInstances [k].Attributes ["firstEnemyTime"].Value);
+						instance.timeToGetHit = float.Parse (roomInstances [k].Attributes ["hitTime"].Value);
+						instance.damageTakenInRoom = float.Parse (roomInstances [k].Attributes ["damageTaken"].Value);
 
-					newPlayer.createInstance (instance);
+						newPlayer.createInstance (instance);
+					}
 				}
 			}
 			//newPlayer.printStats ();
@@ -174,6 +174,7 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 
 	//Boss rooms
 	public int[,] getBossRoomLayout(int _room){
+		Debug.Log (_room + "  " + getNumberOfBossRooms());
 		return bossRooms[_room].layout;
 	}
 
@@ -192,5 +193,17 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 
 	public void printPlayers(){
 		Debug.Log (playerProfiles.Count);
+	}
+
+	public int checkRoomModifier(int _roomID, float _roomScore, int currentRoomMod){
+		if(_roomID >=0 && _roomID < getNumberOfRooms()){
+			return rooms [_roomID].checkRoomModifier (_roomScore, currentRoomMod);
+		}
+		else if(_roomID >=getNumberOfRooms() && _roomID < getNumberOfRooms()+getNumberOfBossRooms()){
+			return bossRooms [_roomID].checkRoomModifier (_roomScore, currentRoomMod);
+		} else{
+			return specialRooms [_roomID].checkRoomModifier (_roomScore, currentRoomMod);
+		}
+
 	}
 }

@@ -43,31 +43,29 @@ public class PlayerStats {
 	}
 
 	public void setRoomModifier(int _roomID, int _modID = 0){
-		if (_modID != null) {
-			if (!roomModifiers.ContainsKey (_roomID)) {
-				roomModifiers.Add (_roomID, _modID);
-			} else {
-				roomModifiers [_roomID] = _modID;
+		if (roomModifiers.ContainsKey(_roomID)) { //Checks if key exists in roomModifiers Dictionary
+			if(roomStats[_roomID][roomModifiers [_roomID]].Count >= 2){
+				if (roomModifiers [_roomID] != _modID) { //If the values are different. UPDATE --> CHECKS THAT IT MAKES SENSE Remove all old statistics the mod room roomStats place.
+					roomStats [_roomID] [_modID] = new List<RoomStats> ();
+				}
+				roomModifiers [_roomID] = _modID; //Change the current room modifier for the player
 			}
+		} else {
+			roomModifiers.Add (_roomID, _modID); //Adds a roomModifier for the room
 		}
 	}
 
 	public int getRoomModifer(int _roomID){
-		if(!roomModifiers.ContainsKey(_roomID)){
-			return null;
+		if(!roomModifiers.ContainsKey(_roomID)){ //Checks if a value exists in roomModifiers Dictionary
+			setRoomModifier(_roomID); //Create a room modifier
 		}
-		return roomModifiers [_roomID];
+		return roomModifiers [_roomID]; //Return the modID
 	}
-
-	/*
-	 * Change to incorporate the room modifiers
-	 * 
-	 * 
-	 */
+		
 	public void copyRoomStats(PlayerStats _player){
 		for(int i=0; i<GameManager.instance.roomData.getTotalNumberOfRooms(); i++){
-			this.setRoomInstances (i, _player.getRoomInstances (i));
 			this.setRoomModifier (i, _player.getRoomModifer (i));
+			this.setRoomInstances (i, _player.getRoomInstances (i));
 		}
 	}
 
@@ -126,11 +124,16 @@ public class PlayerStats {
 		return roomStats [_roomIndex][_modID];
 	}
 
-	public bool roomTypePlayed(int _roomID, int _modID = 0){
+	public bool roomTypePlayed(int _roomID){
 		if (roomStats.ContainsKey (_roomID)) {
-			if (roomStats [_roomID].ContainsKey (_modID)) {
-				return true;
-			}
+			return true;
+		}
+		return false;
+	}
+
+	public bool roomModPlayed(int _roomID, int _modID = 0){
+		if (roomStats [_roomID].ContainsKey (_modID)) {
+			return true;
 		}
 		return false;
 	}
@@ -139,7 +142,12 @@ public class PlayerStats {
 		if (currentFloor [_roomIndex] == null) {
 			currentFloor [_roomIndex] = new RoomStats ();
 			currentFloor [_roomIndex].roomID = _roomID;
-			currentFloor [_roomIndex].modID = roomModifiers[_roomID];
+			if (roomModifiers.ContainsKey (_roomID)) {
+				currentFloor [_roomIndex].modID = roomModifiers[_roomID];
+			} else {
+				currentFloor [_roomIndex].modID = 0;
+			}
+
 		}
 	}
 
@@ -174,6 +182,9 @@ public class PlayerStats {
 			roomStats[_room.roomID].Add (_room.modID, new List<RoomStats>());
 		}
 		roomStats [_room.roomID][_room.modID].Add (new RoomStats(_room));
+		if(roomStats [_room.roomID][_room.modID].Count > 10){
+			roomStats [_room.roomID] [_room.modID].RemoveAt (0);
+		}
 		return roomStats [_room.roomID][_room.modID].Count - 1;
 	}
 
@@ -255,7 +266,7 @@ public class PlayerStats {
 	public void printStats(){
 		Debug.Log ("-------ALL ROOM STATISTICS-------");
 		foreach (KeyValuePair<int, Dictionary<int,List<RoomStats>>> _room in roomStats) {
-			foreach (KeyValuePair<int, List<RoomStats>> _key in _room) {
+			foreach (KeyValuePair<int, List<RoomStats>> _key in _room.Value) {
 				for (int i = 0; i < _key.Value.Count; i++) {
 					Debug.Log (System.String.Format ("Room:{0} Mod:{1} statID:{2} StartTime:{3} EndTime:{4} EnemyKilled:{5} PlayerDamaged:{6}",_room.Key, _key.Key, i, _key.Value [i].startTime, _key.Value [i].endTime, _key.Value [i].timeToKillFirstEnemy, _key.Value [i].damageTakenInRoom));
 				}

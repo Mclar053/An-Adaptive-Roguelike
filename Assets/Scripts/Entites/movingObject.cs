@@ -88,4 +88,9 @@ public abstract class movingObject : MonoBehaviour {
 		}
 		return false;
 	}
+
+	public void changeDifficulty(int _modifier){
+		maxHitpoints += Mathf.Max (-0.6f * maxHitpoints, _modifier * 0.1f * maxHitpoints);
+		currentHitpoints = maxHitpoints;
+	}
 }

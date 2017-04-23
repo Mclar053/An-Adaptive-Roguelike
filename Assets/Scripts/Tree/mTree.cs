@@ -147,7 +147,7 @@ public class mTree{
 	}
 
 	public void makeBossRoom(){
-		int randomNum = Random.Range (0, GameManager.instance.numberOfBossRooms);
+		int randomNum = Random.Range (GameManager.instance.numberOfRooms, GameManager.instance.numberOfRooms+GameManager.instance.numberOfBossRooms);
 
 		int endNode = getEndRoomIndices () [Random.Range (0, getEndRoomCount ())];
 		nodes [endNode].setRoomType (1);
