@@ -9,6 +9,7 @@ public class Enemy_Ghost : Enemy<Enemy_Ghost> {
 		fsm = new StateMachine<Enemy_Ghost> (this);
 		fsm.changeState(new Ghost_RunToPlayer ());
 		currentColour = new Color (1f, 1f, 1f, 1f);
+		changeDifficulty (modifier);
 	}
 }
 

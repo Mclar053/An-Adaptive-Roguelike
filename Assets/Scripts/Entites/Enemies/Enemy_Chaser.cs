@@ -14,6 +14,7 @@ public class Enemy_Chaser : Enemy<Enemy_Chaser> {
 		pauseTime = 3f;
 		chaseTime = 5f;
 		currentColour = new Color (1f, 1f, 1f, 1f);
+		changeDifficulty (modifier);
 	}
 
 	public bool checkStateChange(float _startTime, float _timeInterval){

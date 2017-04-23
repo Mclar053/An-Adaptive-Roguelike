@@ -5,6 +5,7 @@ public abstract class movingObject : MonoBehaviour {
 	
 	public float speed, maxHitpoints, currentHitpoints, hitDelay, dmg, fireDelay, shotSpeed, range;
 	public float lastHit, lastFired;
+	public int modifier;
 	protected Color currentColour;
 	
 	virtual protected void Start () {
@@ -35,10 +36,15 @@ public abstract class movingObject : MonoBehaviour {
 
 	}
 
+	protected void setHealth(float _max){
+		maxHitpoints = _max;
+		currentHitpoints = _max;
+	}
+
 	protected void setStats(float _speed,float _maxHitpoints,float _hitDelay,float _dmg,float _fireDelay,float _shotSpeed,float _range){
 		speed = _speed;
 		maxHitpoints = _maxHitpoints;
-		currentHitpoints = maxHitpoints;
+		currentHitpoints = _maxHitpoints;
 		hitDelay = _hitDelay;
 		dmg = _dmg;
 		fireDelay = _fireDelay;

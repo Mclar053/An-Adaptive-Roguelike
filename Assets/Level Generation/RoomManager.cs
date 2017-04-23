@@ -206,7 +206,7 @@ public class RoomManager : MonoBehaviour {
 //			Debug.Log (System.String.Format("{0}, {1}, {2}, {3}",i,_entities[i,0],_entities[i,1],_entities[i,2]));
 			GameObject instance = Instantiate (enemy[_entities[i,0]], new Vector3 (_entities[i,1],_entities[i,2], 0f), Quaternion.identity) as GameObject;
 			if (instance.GetComponent<movingObject> () != null) {
-				instance.GetComponent<movingObject> ().changeDifficulty (_mod);
+				instance.GetComponent<movingObject> ().modifier = _mod;
 			}
 			instance.transform.SetParent (roomHolder [_room]);
 		}

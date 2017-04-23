@@ -10,6 +10,7 @@ public class Enemy_Shooter : Enemy<Enemy_Shooter> {
 		fsm = new StateMachine<Enemy_Shooter> (this);
 		fsm.changeState( new Shooter_ShootPlayer ());
 		currentColour = new Color (1f, 1f, 1f, 1f);
+		changeDifficulty (modifier);
 	}
 
 	public void fireAtPlayer(){

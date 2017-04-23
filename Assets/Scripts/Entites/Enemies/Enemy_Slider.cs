@@ -14,6 +14,7 @@ public class Enemy_Slider : Enemy<Enemy_Slider> {
 		fsm = new StateMachine<Enemy_Slider> (this);
 		fsm.changeState (new Slider_ShootPlayer());
 		currentColour = new Color (1f, 1f, 1f, 1f);
+		changeDifficulty (modifier);
 	}
 
 	override protected void OnCollisionStay2D(Collision2D other){
