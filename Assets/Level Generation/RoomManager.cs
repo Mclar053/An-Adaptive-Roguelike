@@ -109,15 +109,22 @@ public class RoomManager : MonoBehaviour {
 				roomLayout = GameManager.instance.roomData.getRoomLayout (currentNode.getRoomID ());
 				roomEntities = GameManager.instance.roomData.getRoomEntities (currentNode.getRoomID ());
 			}
-				
-				float performanceScore = GameManager.instance.statistics.getRoomAvergePerformance (currentNode.getRoomID ());
-				int currentMod = GameManager.instance.statistics.getRoomModifer (currentNode.getRoomID ());
-			if (currentNode.getRoomID () != 0) {
-				if (performanceScore >= 0) {
-					currentMod += GameManager.instance.roomData.checkRoomModifier (currentNode.getRoomID (), performanceScore, currentMod);
-					GameManager.instance.statistics.setRoomModifier (currentNode.getRoomID (), currentMod);
-				}
-			}
+
+
+			float performanceScore = GameManager.instance.statistics.getRoomAvergePerformance (currentNode.getRoomID ());
+			int currentMod = GameManager.instance.statistics.getRoomModifer (currentNode.getRoomID ());
+
+			//PLAYTEST - COMMENT
+			//------
+//			if (currentNode.getRoomID () != 0) {
+//				if (performanceScore >= 0) {
+//					Debug.Log ("Before "+currentMod+" ROOMID "+currentNode.getRoomID ()+" MOD "+GameManager.instance.statistics.getRoomModifer(currentNode.getRoomID()));
+//					currentMod += GameManager.instance.roomData.checkRoomModifier (currentNode.getRoomID (), performanceScore, currentMod);
+//					GameManager.instance.statistics.setRoomModifier (currentNode.getRoomID (), currentMod);
+//					Debug.Log ("After "+currentMod+" ROOMID "+currentNode.getRoomID ()+" MOD "+GameManager.instance.statistics.getRoomModifer(currentNode.getRoomID()));
+//				}
+//			}
+			//-----
 
 			//Debug.Log (System.String.Format("{0} : {1} : {2} : {3} : {4}",i, doors[0],doors[1],doors[2],doors[3]));
 			roomHolder[i] = new GameObject ("Room"+i).transform;

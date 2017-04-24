@@ -70,7 +70,7 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 
 			for (int j = 0; j < rooms.Count + bossRooms.Count + specialRooms.Count; j++) {
 				if (playerProfiles [i].roomTypePlayed (j)) {
-					xmlToSave += "<room id='" + j + "' currentMod='" + playerProfiles[i].getRoomModifer(i) + "'>";
+					xmlToSave += "<room id='" + j + "' currentMod='" + playerProfiles[i].getRoomModifer(j) + "'>";
 					foreach(KeyValuePair<int,List<RoomStats>> _room in playerProfiles [i].getRoomInstances (j)){
 						xmlToSave += "<roomMod id='"+ _room.Key +"'>";
 
@@ -101,7 +101,6 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 
 			XmlNodeList playerRooms = players [i].ChildNodes[0].ChildNodes;
 			for(int j=0; j<playerRooms.Count; j++){ //Loop through all rooms
-				Debug.Log(j+" "+playerRooms.Count +" "+ int.Parse (playerRooms [j].Attributes ["currentMod"].Value));
 				XmlNodeList roomMods = playerRooms [j].ChildNodes;
 				newPlayer.setRoomModifier (j, int.Parse (playerRooms [j].Attributes ["currentMod"].Value));
 

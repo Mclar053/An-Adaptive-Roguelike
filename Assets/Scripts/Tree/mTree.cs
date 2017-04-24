@@ -152,7 +152,7 @@ public class mTree{
 		int endNode = getEndRoomIndices () [Random.Range (0, getEndRoomCount ())];
 		nodes [endNode].setRoomType (1);
 		nodes[endNode].setRoomID(randomNum);
-		Debug.Log ("BOSS ROOM: "+endNode+" ROOM ID: "+nodes[endNode].getRoomID()+" "+randomNum + " TYPE: " +nodes [endNode].getRoomType());
+		//Debug.Log ("BOSS ROOM: "+endNode+" ROOM ID: "+nodes[endNode].getRoomID()+" "+randomNum + " TYPE: " +nodes [endNode].getRoomType());
 	}
 
 	//Returns position of found number in array. If not found, return -1

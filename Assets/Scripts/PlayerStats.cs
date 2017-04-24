@@ -44,7 +44,7 @@ public class PlayerStats {
 
 	public void setRoomModifier(int _roomID, int _modID = 0){
 		if (roomModifiers.ContainsKey(_roomID)) { //Checks if key exists in roomModifiers Dictionary
-			if(roomStats[_roomID][roomModifiers [_roomID]].Count >= 2){
+			if(roomStats[_roomID][roomModifiers [_roomID]].Count >= 5){
 				if (roomModifiers [_roomID] != _modID) { //If the values are different. UPDATE --> CHECKS THAT IT MAKES SENSE Remove all old statistics the mod room roomStats place.
 					roomStats [_roomID] [_modID] = new List<RoomStats> ();
 				}
@@ -182,9 +182,14 @@ public class PlayerStats {
 			roomStats[_room.roomID].Add (_room.modID, new List<RoomStats>());
 		}
 		roomStats [_room.roomID][_room.modID].Add (new RoomStats(_room));
-		if(roomStats [_room.roomID][_room.modID].Count > 10){
-			roomStats [_room.roomID] [_room.modID].RemoveAt (0);
-		}
+
+		//PLAYTEST - COMMENT
+		//------
+//		if(roomStats [_room.roomID][_room.modID].Count > 10){ 
+//			roomStats [_room.roomID] [_room.modID].RemoveAt (0);
+//		}
+		//------
+
 		return roomStats [_room.roomID][_room.modID].Count - 1;
 	}
 
@@ -255,7 +260,7 @@ public class PlayerStats {
 		} else { //Room mod has enough data and exists
 			List<RoomStats> selectedRoom = roomStats [_roomID][roomModifiers[_roomID]];
 			for(int i=0; i<selectedRoom.Count; i++){ //Calculate score for each room
-				totalScore+=selectedRoom[i].performanceScore() * (-0.01f * Mathf.Pow(i,2) + 1);
+				totalScore+=selectedRoom[selectedRoom.Count-1-i].performanceScore() * (-0.01f * Mathf.Pow(i,2) + 1);
 			}
 			totalScore /= selectedRoom.Count;
 		}
