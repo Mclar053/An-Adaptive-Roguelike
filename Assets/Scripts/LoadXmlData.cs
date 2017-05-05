@@ -87,12 +87,19 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 		}
 		xmlToSave += "</AllPlayers>";
 		profileXML.LoadXml (xmlToSave);
-		profileXML.Save ("Assets/player-profiles.xml");
+//		profileXML.Save ("Assets/player-profiles.xml");
+		profileXML.Save(Application.dataPath+"/player-profiles.xml");
 	}
 
 	public void loadPlayerProfiles(){
 		XmlDocument profileXML = new XmlDocument ();
-		profileXML.LoadXml (PlayerData.text);
+//		profileXML.LoadXml (PlayerData.text);
+		Debug.Log(Application.dataPath);
+
+		if (!File.Exists (Application.dataPath + "/player-profiles.xml")) {
+			this.savePlayerProfiles ();
+		}
+		profileXML.Load (Application.dataPath+"/player-profiles.xml");
 		XmlNodeList players = profileXML.GetElementsByTagName("player");
 		for(int i=0; i<players.Count; i++){
 			PlayerStats newPlayer = new PlayerStats ();

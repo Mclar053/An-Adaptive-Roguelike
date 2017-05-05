@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour {
 		GameManager.instance.changeState (GameStates.MainMenu);
 		//Sets up a level
 		//InitGame ();
-		guiStyle.fontSize = 20;
+		guiStyle.fontSize = 30;
 		guiStyle.normal.textColor = Color.white;
 	}
 
@@ -158,6 +158,7 @@ public class GameManager : MonoBehaviour {
 				case GameStates.GameOver:
 					roomScript.destroyLevel ();
 					roomScript.destroyPlayer ();
+					statistics.removeCurrentRoomStat (roomScript.currentRoom);
 					statistics.storeFloorData ();
 					roomData.savePlayer (statistics,statistics.userID);
 					roomData.savePlayerProfiles ();

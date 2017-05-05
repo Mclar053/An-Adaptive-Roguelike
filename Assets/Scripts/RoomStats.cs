@@ -14,14 +14,6 @@ public class RoomStats {
 	public float timeToGetHit;
 	public float damageTakenInRoom;
 
-	//Player Stats
-	//float playerSpeed;
-	//float playerFireDelay;
-	//float playerDamage;
-	//float playerShotSpeed;
-	//float playerCurrentHP;
-	//float playerMaxHP;
-
 	bool death;
 	bool complete;
 
@@ -40,7 +32,6 @@ public class RoomStats {
 		complete = _room.isComplete ();
 
 		timeToKillFirstEnemy = _room.timeToKillFirstEnemy;
-//		timeToGetHit = _room.timeToGetHit;
 		damageTakenInRoom = _room.damageTakenInRoom;
 	}
 
@@ -53,14 +44,11 @@ public class RoomStats {
 	}
 
 	public float timeToCompleteRoom(){
-		if (endTime == 0 && startTime > 0) {
-			return 9999999;
-		}
 		return endTime - startTime;
 	}
 
 	public float performanceScore(){
-		return (3 * damageTakenInRoom) + (timeToCompleteRoom () / 20) + ((timeToKillFirstEnemy - timeToCompleteRoom ()) / 30);
+		return (3 * damageTakenInRoom) + (timeToCompleteRoom () / 10) + ((timeToKillFirstEnemy - timeToCompleteRoom ()) / 20);
 	}
 
 }

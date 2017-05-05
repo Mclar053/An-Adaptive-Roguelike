@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 // PlayerScript requires the GameObject to have a Rigidbody2D component
@@ -7,14 +7,19 @@ using System.Collections;
 
 public class PlayerMovement : movingObject {
 
-	float score;
-
 	override protected void Start () {
 		GetComponent<Rigidbody2D> ().freezeRotation = true;
 		resetPlayer ();
 		currentColour = new Color (1f, 1f, 1f, 1f);
 	}
 
+    /* Reference: http://answers.unity3d.com/questions/1233704/2d-top-down-movement-1.html
+    * Author: Zoogyburger
+    *
+    *
+    *
+    *
+    */
 	override protected void FixedUpdate () {
 		//Gets the movement vector for the player
 		Vector2 movementVector = new Vector2(Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -99,13 +104,5 @@ public class PlayerMovement : movingObject {
 		lastFired = 0f;
 		range = 1f;
 		GetComponent<Rigidbody2D> ().position = new Vector2 (7, 4);
-	}
-
-	public float getScore(){
-		return score;
-	}
-
-	public void addScore(float _score){
-		score += _score;
 	}
 }

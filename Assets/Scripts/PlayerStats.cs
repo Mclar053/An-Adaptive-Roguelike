@@ -61,6 +61,10 @@ public class PlayerStats {
 		}
 		return roomModifiers [_roomID]; //Return the modID
 	}
+
+	public void removeCurrentRoomStat(int _roomIndex){
+		currentFloor[_roomIndex] = null;
+	}
 		
 	public void copyRoomStats(PlayerStats _player){
 		for(int i=0; i<GameManager.instance.roomData.getTotalNumberOfRooms(); i++){
@@ -185,9 +189,9 @@ public class PlayerStats {
 
 		//PLAYTEST - COMMENT
 		//------
-//		if(roomStats [_room.roomID][_room.modID].Count > 10){ 
-//			roomStats [_room.roomID] [_room.modID].RemoveAt (0);
-//		}
+		if(roomStats [_room.roomID][_room.modID].Count > 10){ 
+			roomStats [_room.roomID] [_room.modID].RemoveAt (0);
+		}
 		//------
 
 		return roomStats [_room.roomID][_room.modID].Count - 1;
