@@ -9,16 +9,19 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 	public TextAsset GameAsset;
 	public TextAsset PlayerData;
 
+	//Stores all the different room types in different lists
 	List<Room> rooms = new List<Room>();
 	List<Room> bossRooms = new List<Room>();
 	List<Room> specialRooms = new List<Room>();
 
+	//Store all player statistics in a list
 	List<PlayerStats> playerProfiles = new List<PlayerStats>();
+	int currentPlayerIndex; //The current player playing
 
 	/* Reference: http://unitynoobs.blogspot.co.uk/2011/02/xml-loading-data-from-xml-file.html
 	 * Author: Rodrigo Barros 
 	 * 
-	 * 
+	 * Loads the room layout xml file and puts the rooms into the room lists (rooms, bossRooms and specialRooms)
 	 * 
 	 */
 	public void loadRooms(){
@@ -42,12 +45,12 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 			}
 
 			//Entity Positions
-			//Debug.Log(entities.Count);
+			//Adds entities and their positions to the room
 			for(int j=0; j<entities.Count; j++){
-				//Debug.Log (entities[j].Attributes["column"].Value);
 				newRoom.setEntity (j, int.Parse(entities[j].Attributes["column"].Value), int.Parse(entities[j].Attributes["row"].Value), int.Parse(entities[j].Attributes["type"].Value));
 			}
 
+			//Checks what room type it is and places it into the appropriate room list
 			if(roomsList[i].ChildNodes[3].InnerText == "Normal"){
 				rooms.Add(newRoom); 
 			} else if(roomsList[i].ChildNodes[3].InnerText == "Boss"){
@@ -60,7 +63,7 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 
 	/* Reference: https://msdn.microsoft.com/en-us/library/dw229a22(v=vs.110).aspx
 	 * 
-	 * 
+	 * Saves all of the player profiles in the player profile list to an xml file (player-profiles.xml)
 	 */
 	public void savePlayerProfiles(){
 		XmlDocument profileXML = new XmlDocument ();
@@ -87,13 +90,13 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 		}
 		xmlToSave += "</AllPlayers>";
 		profileXML.LoadXml (xmlToSave);
-//		profileXML.Save ("Assets/player-profiles.xml");
 		profileXML.Save(Application.dataPath+"/player-profiles.xml");
 	}
 
+
+	//Loads all of the player profiles from the player-profiles.xml file to the player profile list
 	public void loadPlayerProfiles(){
 		XmlDocument profileXML = new XmlDocument ();
-//		profileXML.LoadXml (PlayerData.text);
 		Debug.Log(Application.dataPath);
 
 		if (!File.Exists (Application.dataPath + "/player-profiles.xml")) {
@@ -102,7 +105,7 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 		profileXML.Load (Application.dataPath+"/player-profiles.xml");
 		XmlNodeList players = profileXML.GetElementsByTagName("player");
 		for(int i=0; i<players.Count; i++){
-			PlayerStats newPlayer = new PlayerStats ();
+			PlayerStats newPlayer = new PlayerStats (i);
 			newPlayer.resetPlayerStats ();
 			newPlayer.userID = int.Parse(players [i].Attributes ["id"].Value);
 
@@ -128,24 +131,25 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 					}
 				}
 			}
-			//newPlayer.printStats ();
 			playerProfiles.Add (newPlayer);
 		}
 	}
 
-	public PlayerStats loadPlayer(int _playerID){
-		if (_playerID < playerProfiles.Count) {
-			return playerProfiles [_playerID];
+	public bool loadPlayer(int _playerID){
+		if (_playerID >= 0 && _playerID < playerProfiles.Count) {
+			currentPlayerIndex = _playerID;
+			return true;
 		}
-		return null;
+		return false;
 	}
 
-	public void savePlayer(PlayerStats _player, int _playerID){
-		if (_playerID < 0 || _playerID >= playerProfiles.Count) {
-			playerProfiles.Add (_player);
-		} else {
-			playerProfiles [_playerID] = _player;
-		}
+	public PlayerStats CurrentPlayer(){
+		return playerProfiles [currentPlayerIndex];
+	}
+
+	public void addPlayer(){
+		currentPlayerIndex = playerProfiles.Count;
+		playerProfiles.Add (new PlayerStats(playerProfiles.Count));
 	}
 
 	public int getNewPlayerID(){
@@ -201,12 +205,13 @@ public class LoadXmlData : MonoBehaviour{ // the Class
 		Debug.Log (playerProfiles.Count);
 	}
 
+	//Checks the room modifier based on the performance score the player has achieved with the currentRoomModifier
 	public int checkRoomModifier(int _roomID, float _roomScore, int currentRoomMod){
 		if(_roomID >=0 && _roomID < getNumberOfRooms()){
 			return rooms [_roomID].checkRoomModifier (_roomScore, currentRoomMod);
 		}
 		else if(_roomID >=getNumberOfRooms() && _roomID < getNumberOfRooms()+getNumberOfBossRooms()){
-			return bossRooms [_roomID].checkRoomModifier (_roomScore, currentRoomMod);
+			return bossRooms [_roomID-getNumberOfRooms()].checkRoomModifier (_roomScore, currentRoomMod);
 		} else{
 			return specialRooms [_roomID].checkRoomModifier (_roomScore, currentRoomMod);
 		}

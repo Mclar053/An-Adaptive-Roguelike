@@ -47,6 +47,7 @@ public class RoomStats {
 		return endTime - startTime;
 	}
 
+	//The performance score for the statistic
 	public float performanceScore(){
 		return (3 * damageTakenInRoom) + (timeToCompleteRoom () / 10) + ((timeToKillFirstEnemy - timeToCompleteRoom ()) / 20);
 	}

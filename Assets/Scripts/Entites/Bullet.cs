@@ -26,7 +26,7 @@ public class Bullet : movingObject {
 		if(other.gameObject.tag == "Enemy"){
 			other.gameObject.GetComponent<movingObject> ().damage(dmg);
 			if(other.gameObject.GetComponent<movingObject>().checkDead()){
-				GameManager.instance.statistics.firstEnemyKilled (GameManager.instance.roomScript.currentRoom);
+				GameManager.instance.roomData.CurrentPlayer().firstEnemyKilled (GameManager.instance.roomScript.currentRoom);
 				Destroy (other.gameObject);
 			}
 		}
