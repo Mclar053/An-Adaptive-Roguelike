@@ -1,6 +1,8 @@
 # An Adaptive Roguelike
 Goldsmiths, University of London
+
 Matthew Clark (33343315)
+
 Supervised by Jeremy Gow
 
 # What is the Program?
