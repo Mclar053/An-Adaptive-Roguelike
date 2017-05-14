@@ -15,10 +15,6 @@ public class PlayerMovement : movingObject {
 
     /* Reference: http://answers.unity3d.com/questions/1233704/2d-top-down-movement-1.html
     * Author: Zoogyburger
-    *
-    *
-    *
-    *
     */
 	override protected void FixedUpdate () {
 		//Gets the movement vector for the player

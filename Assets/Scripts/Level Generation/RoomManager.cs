@@ -176,8 +176,8 @@ public class RoomManager : MonoBehaviour {
 		return false;
 	}
 
-	/* Reference:
-	 * Author:
+	/* Reference: https://unity3d.com/learn/tutorials/projects/2d-roguelike-tutorial/writing-board-manager?playlist=17150
+	 * Author: Matt Schell
 	 * 
 	 *@method: Creates all tile gameobjects for a room  
 	 */

@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*Reference: https://learn.gold.ac.uk/mod/resource/view.php?id=382883
+ * Author: Jeremy Gow
+ * Pages: 18/19
+ */
+
 //Generic States
 public interface State<A>{
 

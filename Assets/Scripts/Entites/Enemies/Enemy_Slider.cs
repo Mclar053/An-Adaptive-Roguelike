@@ -18,9 +18,11 @@ public class Enemy_Slider : Enemy<Enemy_Slider> {
 	}
 
 	override protected void OnCollisionStay2D(Collision2D other){
+		//Damage player if collide with player
 		if(other.gameObject.tag == "Player"){
 			other.gameObject.GetComponent<movingObject> ().damage(dmg);
 		}
+		//If hit by the player, walls, doors, gaps or enemy - Change direction
 		if ((other.gameObject.tag == "Player" || other.gameObject.tag == "Wall" || other.gameObject.tag == "Gap" || other.gameObject.tag == "Enemy" || other.gameObject.tag == "DoorLeft" || other.gameObject.tag == "DoorRight" || other.gameObject.tag == "DoorTop" || other.gameObject.tag == "DoorBottom") && Time.time > lastChange + 0.6f) {
 			GetComponent<Rigidbody2D>().AddForce (Vector3.ClampMagnitude(this.transform.position-other.transform.position,1) * speed);
 			changeDirection ();
@@ -34,17 +36,17 @@ public class Enemy_Slider : Enemy<Enemy_Slider> {
 	}
 
 	void changeDirection(){
-		if(direction.x == 0 && direction.y == -1){
+		if(direction.x == 0 && direction.y == -1){ //Check if direction is south, Change to left
 			direction = new Vector2 (-1,0);
-		} else if(direction.x == 1 && direction.y == 0){
+		} else if(direction.x == 1 && direction.y == 0){ //Check if direction is south, Change to left
 			direction = new Vector2 (0,-1);
-		} else if(direction.x == 0 && direction.y == 1){
+		} else if(direction.x == 0 && direction.y == 1){ //Check if direction is south, Change to left
 			direction = new Vector2 (1,0);
-		} else if(direction.x == -1 && direction.y == 0){
+		} else if(direction.x == -1 && direction.y == 0){ //Check if direction is south, Change to left
 			direction = new Vector2 (0,1);
 		}
 		lastChange = Time.time;
-		transform.Rotate (0,0,-90);
+		transform.Rotate (0,0,-90); //Rotate the sprite 90 degrees
 	}
 }
 

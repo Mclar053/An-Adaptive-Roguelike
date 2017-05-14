@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* Reference for basic outline of Game Manager
+ * Link: https://unity3d.com/learn/tutorials/projects/2d-roguelike-tutorial/writing-game-manager?playlist=17150
+ * Author: Matt Schell
+ */ 
+
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null; //Static instance of Gamemanager

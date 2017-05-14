@@ -17,6 +17,7 @@ public class Enemy_Chaser : Enemy<Enemy_Chaser> {
 		changeDifficulty (modifier);
 	}
 
+	//Check if the state needs to change based on time
 	public bool checkStateChange(float _startTime, float _timeInterval){
 		if(Time.time > _startTime + _timeInterval){
 			return true;
@@ -24,6 +25,7 @@ public class Enemy_Chaser : Enemy<Enemy_Chaser> {
 		return false;
 	}
 
+	//Whilst in paused state, change colour of sprite to get less blue to show player when enemy has stop being paused
 	public void charge(float _startTime, float _timeInterval){
 		currentColour = new Color ((Time.time - _startTime) / _timeInterval, (Time.time - _startTime) / _timeInterval, 1f);
 	}
