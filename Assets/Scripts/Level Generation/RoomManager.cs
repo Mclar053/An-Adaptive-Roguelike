@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using System.Xml;
 
+	/* Reference for basic outline of Room Manager
+	* Link: https://unity3d.com/learn/tutorials/projects/2d-roguelike-tutorial/writing-board-manager?playlist=17150
+	* Author: Matt Schell
+	*/ 
+
 public class RoomManager : MonoBehaviour {
 
 	//Columns and rows of all rooms

@@ -6,6 +6,8 @@ using System.Collections;
  * Author: Matt Schell
  */ 
 
+//Music "skeleton.mp3" created by Gustaf Svenungsson
+
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null; //Static instance of Gamemanager
@@ -26,7 +28,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		/* Created to: Unity Tutorial //TODO
+		/* Created to: https://unity3d.com/learn/tutorials/projects/2d-roguelike-tutorial/writing-game-manager?playlist=17150
 		 * If an instance of the game manager has not been created
 		 * created one and if the instance is not the current one then
 		 * destroy that gameobject.
